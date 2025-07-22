@@ -1,0 +1,120 @@
+{
+  "categories": [
+    {
+      "id": "getting-started",
+      "name": "Getting Started",
+      "color": "#28a745",
+      "icon": "🚀",
+      "description": "Welcome guides and tutorial notes",
+      "isDefault": true,
+      "isActive": true,
+      "sortOrder": 1,
+      "createdAt": "2024-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "work",
+      "name": "Work & Professional",
+      "color": "#007bff",
+      "icon": "💼",
+      "description": "Professional notes, meetings, and work-related content",
+      "isDefault": true,
+      "isActive": true,
+      "sortOrder": 2,
+      "createdAt": "2024-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "personal",
+      "name": "Personal Life",
+      "color": "#ffc107",
+      "icon": "🏠",
+      "description": "Personal thoughts, reminders, and life planning",
+      "isDefault": true,
+      "isActive": true,
+      "sortOrder": 3,
+      "createdAt": "2024-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "education",
+      "name": "Learning & Education",
+      "color": "#17a2b8",
+      "icon": "📚",
+      "description": "Study materials, courses, and educational content",
+      "isDefault": true,
+      "isActive": true,
+      "sortOrder": 4,
+      "createdAt": "2024-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "health",
+      "name": "Health & Fitness",
+      "color": "#28a745",
+      "icon": "💪",
+      "description": "Health tracking, workout plans, and wellness notes",
+      "isDefault": false,
+      "isActive": true,
+      "sortOrder": 5,
+      "createdAt": "2024-07-12T00:00:00.000Z"
+    },
+    {
+      "id": "travel",
+      "name": "Travel & Adventure",
+      "color": "#fd7e14",
+      "icon": "✈️",
+      "description": "Travel plans, itineraries, and adventure logs",
+      "isDefault": false,
+      "isActive": true,
+      "sortOrder": 6,
+      "createdAt": "2024-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "creative",
+      "name": "Creative Projects",
+      "color": "#e83e8c",
+      "icon": "🎨",
+      "description": "Creative writing, art projects, and inspiration",
+      "isDefault": false,
+      "isActive": true,
+      "sortOrder": 7,
+      "createdAt": "2024-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "finance",
+      "name": "Finance & Money",
+      "color": "#20c997",
+      "icon": "💰",
+      "description": "Budget tracking, financial planning, and money management",
+      "isDefault": false,
+      "isActive": true,
+      "sortOrder": 8,
+      "createdAt": "2024-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "ideas",
+      "name": "Ideas & Inspiration",
+      "color": "#6f42c1",
+      "icon": "💡",
+      "description": "Random thoughts, creative ideas, and brainstorming",
+      "isDefault": false,
+      "isActive": true,
+      "sortOrder": 9,
+      "createdAt": "2024-07-01T00:00:00.000Z"
+    },
+    {
+      "id": "archived",
+      "name": "Archived",
+      "color": "#6c757d",
+      "icon": "📦",
+      "description": "Old or completed notes that are no longer active",
+      "isDefault": false,
+      "isActive": false,
+      "sortOrder": 99,
+      "createdAt": "2024-07-01T00:00:00.000Z"
+    }
+  ],
+  "metadata": {
+    "totalCategories": 10,
+    "activeCategories": 9,
+    "lastUpdated": "2024-07-21T12:00:00.000Z",
+    "version": "1.0.0"
+  }
+}

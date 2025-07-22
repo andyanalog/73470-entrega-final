@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Notes App</h1>
+        
+        <div class="menu">
+            <button class="btn-primary" onclick="showSection('new-note')">New Note</button>
+            <button class="btn-secondary" onclick="showSection('view-notes')">View All Notes</button>
+        </div>
+        
+        <div id="new-note" class="section">
+            <div class="section-content">
+                <h2>Create New Note</h2>
+                <form id="note-form">
+                    <div class="form-group">
+                        <label for="note-title">Note Title:</label>
+                        <input type="text" id="note-title" required placeholder="Enter note title...">
+                    </div>
+                    <div class="form-group">
+                        <label for="note-content">Note Content:</label>
+                        <textarea id="note-content" required placeholder="Enter your note content here..."></textarea>
+                    </div>
+                    
+                    <div id="audio-container"></div>
+                    
+                    <button type="submit" class="btn-primary">Save Note</button>
+                </form>
+                <div id="new-note-message"></div>
+            </div>
+        </div>
+        
+        <div id="view-notes" class="section">
+            <div class="section-content">
+                <h2>All Notes</h2>
+                <div class="notes-controls">
+                    <div class="notes-stats" id="notes-stats"></div>
+                </div>
+                <div id="notes-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/recordrtc@5.6.2/RecordRTC.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/darkmode-js@1.5.7/lib/darkmode-js.min.js"></script>
+    
+    <!-- Application Scripts -->
+    <script src="js/modalSystem.js"></script>
+    <script src="js/errorHandler.js"></script>
+    <script src="js/businessLogic.js"></script>
+    <script src="js/audioManager.js"></script>
+    <script src="js/voiceNoteUI.js"></script>
+    <script src="js/dataManager.js"></script>
+    <script src="js/main.js"></script>
+
+    <!-- Dark Mode Implementation -->
+    <script>
+        function addDarkmodeWidget() {
+            const options = {
+                bottom: '32px',
+                right: '32px',
+                left: 'unset',
+                time: '0.3s',
+                mixColor: '#fff',
+                backgroundColor: '#fff',
+                buttonColorDark: '#100f2c',
+                buttonColorLight: '#fff',
+                saveInCookies: true,
+                label: '🌓',
+                autoMatchOSTheme: true
+            };
+
+            const darkmode = new Darkmode(options);
+            darkmode.showWidget();
+
+            // Optional: Listen for theme changes to update app state
+            const darkmodeToggle = document.querySelector('.darkmode-toggle');
+            if (darkmodeToggle) {
+                darkmodeToggle.addEventListener('click', function() {
+                    // Update app state if needed
+                    setTimeout(() => {
+                        const isDark = document.body.classList.contains('darkmode--activated');
+                        if (window.appState) {
+                            window.appState.ui.theme = isDark ? 'dark' : 'light';
+                        }
+                        
+                        // Dispatch custom event for other components
+                        window.dispatchEvent(new CustomEvent('themeChanged', {
+                            detail: { theme: isDark ? 'dark' : 'light' }
+                        }));
+                    }, 100);
+                });
+            }
+        }
+
+        // Initialize dark mode when page loads
+        window.addEventListener('load', addDarkmodeWidget);
+    </script>
+</body>
+</html>

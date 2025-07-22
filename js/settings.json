@@ -1,0 +1,210 @@
+{
+  "appSettings": {
+    "version": "2.1.0",
+    "appName": "Advanced Notes App",
+    "lastUpdated": "2024-07-21T12:00:00.000Z",
+    "features": {
+      "voiceNotes": {
+        "enabled": true,
+        "maxDuration": 300,
+        "audioFormats": ["webm", "wav", "mp3"],
+        "compressionLevel": "medium",
+        "autoTranscription": false
+      },
+      "categories": {
+        "enabled": true,
+        "maxCategories": 20,
+        "allowCustomColors": true,
+        "defaultCategory": "personal"
+      },
+      "search": {
+        "enabled": true,
+        "searchInContent": true,
+        "searchInTags": true,
+        "fuzzySearch": true,
+        "searchHistory": true
+      },
+      "export": {
+        "enabled": true,
+        "formats": ["json", "txt", "csv", "pdf"],
+        "includeAudio": true,
+        "batchExport": true
+      },
+      "templates": {
+        "enabled": true,
+        "allowCustomTemplates": true,
+        "maxCustomTemplates": 50,
+        "shareTemplates": false
+      },
+      "sync": {
+        "enabled": false,
+        "provider": "localStorage",
+        "autoSync": false,
+        "syncInterval": 300000
+      },
+      "notifications": {
+        "enabled": true,
+        "showSuccess": true,
+        "showErrors": true,
+        "showWarnings": true,
+        "autoHide": true,
+        "hideDelay": 3000
+      }
+    },
+    "ui": {
+      "theme": {
+        "current": "light",
+        "available": ["light", "dark", "auto"],
+        "customThemes": []
+      },
+      "layout": {
+        "sidebar": {
+          "width": 320,
+          "collapsible": true,
+          "defaultCollapsed": false,
+          "showCategories": true,
+          "showStats": true
+        },
+        "notesList": {
+          "view": "card",
+          "available": ["card", "list", "grid"],
+          "itemsPerPage": 20,
+          "showPreviews": true,
+          "previewLength": 100
+        },
+        "editor": {
+          "fontSize": 16,
+          "fontFamily": "Inter, system-ui, sans-serif",
+          "lineHeight": 1.6,
+          "autoSave": true,
+          "autoSaveDelay": 2000,
+          "showWordCount": true,
+          "spellCheck": true
+        }
+      },
+      "animations": {
+        "enabled": true,
+        "duration": 200,
+        "easing": "ease-in-out",
+        "reduceMotion": false
+      }
+    },
+    "limits": {
+      "maxNotesPerUser": 10000,
+      "maxNoteTitle": 200,
+      "maxNoteContent": 50000,
+      "maxAudioSize": 10485760,
+      "maxTagsPerNote": 10,
+      "maxTagLength": 30,
+      "maxCategoriesPerUser": 50
+    },
+    "defaults": {
+      "newNote": {
+        "template": "blank",
+        "category": "personal",
+        "priority": "medium",
+        "isPublic": false,
+        "tags": []
+      },
+      "audio": {
+        "quality": "standard",
+        "autoPlay": false,
+        "showWaveform": false,
+        "recordingFormat": "webm"
+      },
+      "sorting": {
+        "field": "lastModified",
+        "direction": "desc",
+        "available": ["createdAt", "lastModified", "title", "category", "priority"]
+      }
+    },
+    "privacy": {
+      "analytics": false,
+      "errorReporting": false,
+      "dataCollection": false,
+      "shareUsageStats": false
+    },
+    "performance": {
+      "lazyLoading": true,
+      "imageOptimization": true,
+      "cacheSize": 50,
+      "compressionEnabled": true,
+      "offlineMode": true
+    }
+  },
+  "userPreferences": {
+    "userId": "default_user",
+    "profileCreated": "2024-07-01T00:00:00.000Z",
+    "lastLogin": "2024-07-21T12:00:00.000Z",
+    "preferences": {
+      "language": "en",
+      "timezone": "UTC",
+      "dateFormat": "YYYY-MM-DD",
+      "timeFormat": "24h",
+      "notifications": {
+        "desktop": false,
+        "email": false,
+        "inApp": true
+      },
+      "shortcuts": {
+        "newNote": "Ctrl+N",
+        "search": "Ctrl+F",
+        "save": "Ctrl+S",
+        "export": "Ctrl+E"
+      },
+      "accessibility": {
+        "highContrast": false,
+        "largeText": false,
+        "screenReader": false,
+        "keyboardNavigation": true,
+        "reducedMotion": false
+      }
+    },
+    "usage": {
+      "totalNotes": 0,
+      "totalAudioNotes": 0,
+      "averageNoteLength": 0,
+      "favoriteTemplate": "blank",
+      "mostUsedCategory": "personal",
+      "totalSessionTime": 0,
+      "lastActiveFeature": "create-note"
+    }
+  },
+  "systemInfo": {
+    "supportedFeatures": {
+      "mediaRecorder": true,
+      "webAudio": true,
+      "localStorage": true,
+      "indexedDB": true,
+      "serviceWorker": true,
+      "webShare": true,
+      "clipboard": true
+    },
+    "browser": {
+      "userAgent": "",
+      "platform": "",
+      "cookiesEnabled": true,
+      "localStorage": true,
+      "webGL": true
+    },
+    "lastSystemCheck": "2024-07-21T12:00:00.000Z"
+  },
+  "migration": {
+    "currentVersion": "2.1.0",
+    "migrationHistory": [
+      {
+        "from": "1.0.0",
+        "to": "2.0.0",
+        "date": "2024-07-15T00:00:00.000Z",
+        "changes": ["Added voice notes", "Enhanced UI", "Added categories"]
+      },
+      {
+        "from": "2.0.0", 
+        "to": "2.1.0",
+        "date": "2024-07-21T00:00:00.000Z",
+        "changes": ["Added templates", "Enhanced search", "Improved performance"]
+      }
+    ],
+    "pendingMigrations": []
+  }
+}
