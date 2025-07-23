@@ -1,3 +1,6 @@
+// Error Handling System - Production Version
+// Comprehensive error management with user-friendly feedback
+
 class ErrorHandlingSystem {
     constructor(modalSystem, toastSystem) {
         this.modalSystem = modalSystem;
@@ -667,6 +670,39 @@ class ErrorHandlingSystem {
     }
 
     // Public API methods for manual error reporting
+
+    // Retry operation by error ID
+    retryOperation(errorId) {
+        const error = this.errorLog.find(err => err.id === errorId);
+        if (error && error.context?.operation) {
+            this.attemptRetry(error);
+        } else {
+            this.toastSystem.warning('Cannot retry this operation.');
+        }
+    }
+
+    // Show error details by error ID
+    showErrorDetails(errorId) {
+        const error = this.errorLog.find(err => err.id === errorId);
+        if (error) {
+            const details = `Error ID: ${error.id}
+Type: ${error.type || 'Unknown'}
+Message: ${error.message}
+Time: ${new Date(error.timestamp).toLocaleString()}
+Category: ${error.category || 'Unknown'}
+
+Technical Details:
+${error.stack || 'No stack trace available'}`;
+
+            this.modalSystem.alert({
+                title: 'Error Details',
+                message: details,
+                icon: '🔍'
+            });
+        } else {
+            this.toastSystem.warning('Error details not found.');
+        }
+    }
 
     // Report a validation error
     reportValidationError(field, message, element = null) {

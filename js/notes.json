@@ -2,7 +2,7 @@
   "notes": [
     {
       "id": "note_1690000000000_abc123def",
-      "title": "Welcome to Advanced Notes App",
+      "title": "Welcome to Notes App",
       "content": "This is your comprehensive notes application! Features include:\n\n🎤 Voice recording with pause/resume\n📁 Organized categories and tags\n🔍 Advanced search capabilities\n📤 Export/import functionality\n🎨 Multiple themes and layouts\n\nTry exploring all the features and create your first note!",
       "audio": null,
       "createdAt": "2024-07-01T10:00:00.000Z",

@@ -1,7 +1,7 @@
 {
   "appSettings": {
     "version": "2.1.0",
-    "appName": "Advanced Notes App",
+    "appName": "Notes App",
     "lastUpdated": "2024-07-21T12:00:00.000Z",
     "features": {
       "voiceNotes": {

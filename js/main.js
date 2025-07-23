@@ -282,9 +282,19 @@ async function deleteNoteWithWorkflow(noteIndex) {
 
         const note = notes[noteIndex]
         
-        const result = await businessLogic.startNoteDeletionWorkflow(note.id)
+        // Simple confirmation dialog using modal system
+        const hasAudio = note.audio ? '\n\n⚠️ This note contains an audio recording that will also be deleted.' : '';
         
-        if (result.success) {
+        const confirmed = await modalSystem.confirm({
+            title: 'Delete Confirmation',
+            message: `Are you sure you want to delete "${note.title}"?${hasAudio}\n\nThis action cannot be undone.`,
+            icon: '🗑️',
+            confirmText: 'Delete',
+            cancelText: 'Keep',
+            dangerousAction: true
+        });
+
+        if (confirmed) {
             // Remove from local array
             notes.splice(noteIndex, 1)
             await saveNotes()
@@ -314,13 +324,14 @@ async function deleteNoteWithWorkflow(noteIndex) {
             }
 
             updateSidebarNotesList()
+            
+            // Show success message
+            toastSystem.success(`Note "${note.title}" deleted successfully`)
         }
         
     } catch (error) {
-        await errorHandler.handleError(error, {
-            operation: 'delete_note',
-            userInitiated: true
-        })
+        console.error('Error deleting note:', error)
+        toastSystem.error('Failed to delete note. Please try again.')
     }
 }
 
