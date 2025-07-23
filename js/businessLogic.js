@@ -675,7 +675,7 @@ class BusinessLogicManager {
     }
 
     async confirmNoteDeletion(note) {
-        const hasAudio = note.audio ? '\n\n⚠️ This note contains an audio recording that will also be deleted.' : '';
+        const hasAudio = note.audio ? '\n\nThis note contains an audio recording that will also be deleted.' : '';
         
         return await this.modalSystem.confirmDelete(note.title, {
             message: `Are you sure you want to delete "${note.title}"?${hasAudio}\n\nThis action cannot be undone.`

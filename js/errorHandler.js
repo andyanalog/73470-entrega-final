@@ -1,6 +1,3 @@
-// Error Handling System - Production Version
-// Comprehensive error management with user-friendly feedback
-
 class ErrorHandlingSystem {
     constructor(modalSystem, toastSystem) {
         this.modalSystem = modalSystem;

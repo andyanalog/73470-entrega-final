@@ -1,7 +1,3 @@
-// Custom Modal System - Modern UX with SweetAlert2 Integration
-// Replaces native browser dialogs with beautiful custom modals
-// External Library: SweetAlert2 for enhanced notifications
-
 class CustomModalSystem {
     constructor() {
         this.modals = new Map();
@@ -939,9 +935,7 @@ class CustomModalSystem {
     }
 }
 
-// Enhanced Toast Notification System
-// Enhanced Toast Notification System
-// Provides beautiful, animated notifications for user feedback
+// Provides notifications for user feedback
 class ToastNotificationSystem {
     constructor() {
         this.toasts = [];

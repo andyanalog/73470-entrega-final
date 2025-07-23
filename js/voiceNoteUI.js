@@ -289,6 +289,16 @@ class VoiceNoteUI {
         const audioBlob = this.audioManager.base64ToBlob(base64Audio);
         const fileSize = this.formatFileSize(audioBlob.size);
         
+        // Check if we're currently in edit mode
+        const isEditMode = document.querySelector('#edit-note.section.active') !== null;
+        
+        // Only show delete button in edit mode
+        const deleteButton = isEditMode ? 
+            `<button type="button" class="btn-audio btn-delete-small" 
+                    onclick="voiceNoteUI.deleteNoteAudio(${noteIndex})">
+                🗑️ Delete Audio
+            </button>` : '';
+        
         return `
             <div class="note-audio">
                 <div class="audio-info">
@@ -300,10 +310,7 @@ class VoiceNoteUI {
                             onclick="voiceNoteUI.playNoteAudio('${base64Audio}', ${noteIndex})">
                         ▶️ Play Audio
                     </button>
-                    <button type="button" class="btn-audio btn-delete-small" 
-                            onclick="voiceNoteUI.deleteNoteAudio(${noteIndex})">
-                        🗑️ Delete Audio
-                    </button>
+                    ${deleteButton}
                 </div>
             </div>
         `;

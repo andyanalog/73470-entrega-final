@@ -283,7 +283,7 @@ async function deleteNoteWithWorkflow(noteIndex) {
         const note = notes[noteIndex]
         
         // Simple confirmation dialog using modal system
-        const hasAudio = note.audio ? '\n\n⚠️ This note contains an audio recording that will also be deleted.' : '';
+        const hasAudio = note.audio ? '\n\nThis note contains an audio recording that will also be deleted.' : '';
         
         const confirmed = await modalSystem.confirm({
             title: 'Delete Confirmation',
@@ -956,7 +956,7 @@ function showInitialLoader() {
     loader.innerHTML = `
         <div style="text-align: center;">
             <div style="width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;"></div>
-            <h2 style="margin: 0 0 10px 0; font-weight: 300;">Enhanced Notes App</h2>
+            <h2 style="margin: 0 0 10px 0; font-weight: 300;">Notes App</h2>
             <p style="margin: 0; opacity: 0.8;">Loading your personalized experience...</p>
         </div>
         <style>
