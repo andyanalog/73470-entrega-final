@@ -196,13 +196,13 @@
         "from": "1.0.0",
         "to": "2.0.0",
         "date": "2024-07-15T00:00:00.000Z",
-        "changes": ["Added voice notes", "Enhanced UI", "Added categories"]
+        "changes": ["Added voice notes", "UI", "Added categories"]
       },
       {
         "from": "2.0.0", 
         "to": "2.1.0",
         "date": "2024-07-21T00:00:00.000Z",
-        "changes": ["Added templates", "Enhanced search", "Improved performance"]
+        "changes": ["Added templates", "search", "Improved performance"]
       }
     ],
     "pendingMigrations": []

@@ -1,8 +1,3 @@
-/**
- * Enhanced Data Manager - Production Version
- * Handles all data operations with comprehensive error handling and caching
- */
-
 class EnhancedDataManager {
     constructor() {
         this.cache = new Map();
@@ -16,9 +11,7 @@ class EnhancedDataManager {
         this.initializeCache();
     }
 
-    /**
-     * Initialize cache with default settings
-     */
+    // Initialize cache with default settings
     initializeCache() {
         this.cache.set('notes', []);
         this.cache.set('categories', []);
@@ -26,12 +19,7 @@ class EnhancedDataManager {
         this.cache.set('settings', {});
     }
 
-    /**
-     * Generic fetch method with error handling and retry logic
-     * @param {string} url - URL to fetch
-     * @param {Object} options - Fetch options
-     * @returns {Promise<Object>} Parsed JSON data
-     */
+    // Generic fetch method with error handling and retry logic
     async fetchWithRetry(url, options = {}) {
         const retryKey = url;
         const currentRetries = this.errorRetryCount.get(retryKey) || 0;
@@ -83,10 +71,7 @@ class EnhancedDataManager {
         }
     }
 
-    /**
-     * Load notes from JSON file
-     * @returns {Promise<Array>} Array of notes
-     */
+    // Load notes from JSON file
     async loadNotes() {
         const cacheKey = 'notes';
         
@@ -112,10 +97,7 @@ class EnhancedDataManager {
         }
     }
 
-    /**
-     * Load categories from JSON file
-     * @returns {Promise<Array>} Array of categories
-     */
+    // Load categories from JSON file
     async loadCategories() {
         const cacheKey = 'categories';
         
@@ -137,10 +119,7 @@ class EnhancedDataManager {
         }
     }
 
-    /**
-     * Load templates from JSON file
-     * @returns {Promise<Array>} Array of templates
-     */
+    // Load templates from JSON file
     async loadTemplates() {
         const cacheKey = 'templates';
         
@@ -162,10 +141,7 @@ class EnhancedDataManager {
         }
     }
 
-    /**
-     * Load app settings from JSON file
-     * @returns {Promise<Object>} App settings object
-     */
+    // Load app settings from JSON file
     async loadSettings() {
         const cacheKey = 'settings';
         
@@ -187,11 +163,7 @@ class EnhancedDataManager {
         }
     }
 
-    /**
-     * Get template by ID
-     * @param {string} templateId - Template ID
-     * @returns {Promise<Object|null>} Template object or null
-     */
+    // Get template by ID
     async getTemplate(templateId) {
         try {
             const templates = await this.loadTemplates();
@@ -201,11 +173,7 @@ class EnhancedDataManager {
         }
     }
 
-    /**
-     * Get category by ID
-     * @param {string} categoryId - Category ID
-     * @returns {Promise<Object|null>} Category object or null
-     */
+    // Get category by ID
     async getCategory(categoryId) {
         try {
             const categories = await this.loadCategories();
@@ -215,12 +183,7 @@ class EnhancedDataManager {
         }
     }
 
-    /**
-     * Search notes with advanced filtering
-     * @param {string} query - Search query
-     * @param {Object} filters - Additional filters
-     * @returns {Promise<Array>} Filtered notes
-     */
+    // Search notes with advanced filtering
     async searchNotes(query = '', filters = {}) {
         try {
             const notes = await this.loadNotes();
@@ -275,10 +238,7 @@ class EnhancedDataManager {
         }
     }
 
-    /**
-     * Get notes statistics
-     * @returns {Promise<Object>} Statistics object
-     */
+    // Get notes statistics
     async getNotesStatistics() {
         try {
             const notes = await this.loadNotes();
@@ -336,12 +296,7 @@ class EnhancedDataManager {
         }
     }
 
-    /**
-     * Export data in different formats
-     * @param {Array} notes - Notes to export
-     * @param {string} format - Export format (json, csv, txt)
-     * @returns {Promise<string>} Exported data
-     */
+    // Export data in different formats
     async exportData(notes, format = 'json') {
         try {
             const settings = await this.loadSettings();
@@ -376,11 +331,7 @@ class EnhancedDataManager {
         }
     }
 
-    /**
-     * Export notes to CSV format
-     * @param {Array} notes - Notes to export
-     * @returns {string} CSV data
-     */
+    // Export notes to CSV format
     exportToCSV(notes) {
         const headers = [
             'ID', 'Title', 'Content', 'Category', 'Priority', 
@@ -410,11 +361,7 @@ class EnhancedDataManager {
         return csv;
     }
 
-    /**
-     * Export notes to TXT format
-     * @param {Array} notes - Notes to export
-     * @returns {string} TXT data
-     */
+    // Export notes to TXT format
     exportToTXT(notes) {
         let txt = `NOTES EXPORT - ${new Date().toLocaleString()}\n`;
         txt += `${'='.repeat(60)}\n\n`;
@@ -437,12 +384,7 @@ class EnhancedDataManager {
         return txt;
     }
 
-    /**
-     * Download exported data as file
-     * @param {string} data - Data to download
-     * @param {string} filename - File name
-     * @param {string} mimeType - MIME type
-     */
+    // Download exported data as file
     downloadFile(data, filename, mimeType = 'application/json') {
         try {
             const blob = new Blob([data], { type: mimeType });
@@ -466,11 +408,7 @@ class EnhancedDataManager {
         }
     }
 
-    /**
-     * Validate note data structure
-     * @param {Object} note - Note to validate
-     * @returns {Object} Validation result
-     */
+    // Validate note data structure
     async validateNote(note) {
         try {
             const settings = await this.loadSettings();
@@ -540,10 +478,7 @@ class EnhancedDataManager {
         }
     }
 
-    /**
-     * Clear cache for specific data type
-     * @param {string} dataType - Type of data to clear
-     */
+    // Clear cache for specific data type
     clearCache(dataType = null) {
         if (dataType) {
             this.cache.delete(dataType);
@@ -555,11 +490,7 @@ class EnhancedDataManager {
         }
     }
 
-    /**
-     * Set loading state for a specific operation
-     * @param {string} operation - Operation identifier
-     * @param {boolean} isLoading - Loading state
-     */
+    // Set loading state for a specific operation
     setLoadingState(operation, isLoading) {
         this.loadingStates.set(operation, isLoading);
         
@@ -569,18 +500,12 @@ class EnhancedDataManager {
         }));
     }
 
-    /**
-     * Get loading state for an operation
-     * @param {string} operation - Operation identifier
-     * @returns {boolean} Loading state
-     */
+    // Get loading state for an operation
     isLoading(operation) {
         return this.loadingStates.get(operation) || false;
     }
 
-    /**
-     * Setup connection monitoring
-     */
+    // Setup connection monitoring
     setupConnectionMonitoring() {
         window.addEventListener('online', () => {
             this.isOnline = true;
@@ -594,21 +519,12 @@ class EnhancedDataManager {
         });
     }
 
-    /**
-     * Utility delay function
-     * @param {number} ms - Milliseconds to delay
-     * @returns {Promise} Promise that resolves after delay
-     */
+    // Utility delay function
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    /**
-     * Show message to user with enhanced UX
-     * @param {string} message - Message text
-     * @param {string} type - Message type (success, error, warning, info)
-     * @param {string} icon - Message icon
-     */
+    // Show message to user with enhanced UX
     showMessage(message, type = 'info', icon = '') {
         // Create or find message container
         let messageContainer = document.getElementById('global-messages');
@@ -670,11 +586,7 @@ class EnhancedDataManager {
         }, 4000);
     }
 
-    /**
-     * Get color for message type
-     * @param {string} type - Message type
-     * @returns {string} Color code
-     */
+    // Get color for message type
     getTypeColor(type) {
         const colors = {
             success: '#28a745',
@@ -685,9 +597,7 @@ class EnhancedDataManager {
         return colors[type] || colors.info;
     }
 
-    /**
-     * Fallback data methods
-     */
+    // Fallback data methods
     getFallbackNotes() {
         return [
             {
@@ -797,10 +707,7 @@ class EnhancedDataManager {
         };
     }
 
-    /**
-     * Get system capabilities
-     * @returns {Object} System capabilities
-     */
+    // Get system capabilities
     getSystemCapabilities() {
         return {
             mediaRecorder: !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia),
@@ -815,10 +722,7 @@ class EnhancedDataManager {
         };
     }
 
-    /**
-     * Perform system health check
-     * @returns {Promise<Object>} Health check results
-     */
+    // Perform system health check
     async performHealthCheck() {
         const healthCheck = {
             timestamp: new Date().toISOString(),
@@ -880,9 +784,7 @@ class EnhancedDataManager {
         return healthCheck;
     }
 
-    /**
-     * Clean up resources
-     */
+    // Clean up resources
     cleanup() {
         this.cache.clear();
         this.loadingStates.clear();

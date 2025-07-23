@@ -1,8 +1,3 @@
-/**
- * Complete Business Logic Manager
- * Handles the full note lifecycle and business processes
- */
-
 class BusinessLogicManager {
     constructor(dataManager, modalSystem, toastSystem) {
         this.dataManager = dataManager;
@@ -18,9 +13,7 @@ class BusinessLogicManager {
         this.initializeBusinessRules();
     }
 
-    /**
-     * Initialize business rules and validation
-     */
+    // Initialize business rules and validation
     initializeBusinessRules() {
         // Note creation rules
         this.businessRules.set('note_creation', {
@@ -65,11 +58,7 @@ class BusinessLogicManager {
         });
     }
 
-    /**
-     * Start note creation workflow
-     * @param {Object} options - Creation options
-     * @returns {Promise<Object>} Creation result
-     */
+    // Start note creation workflow
     async startNoteCreationWorkflow(options = {}) {
         try {
             this.currentWorkflow = {
@@ -120,11 +109,7 @@ class BusinessLogicManager {
         }
     }
 
-    /**
-     * Handle template selection
-     * @param {string} templateId - Pre-selected template ID
-     * @returns {Promise<Object>} Template selection result
-     */
+    // Handle template selection
     async handleTemplateSelection(templateId = null) {
         if (templateId) {
             const template = await this.dataManager.getTemplate(templateId);
@@ -166,11 +151,7 @@ class BusinessLogicManager {
         return { template: selectedTemplate, source: 'user_selected' };
     }
 
-    /**
-     * Handle category selection
-     * @param {string} categoryId - Pre-selected category ID
-     * @returns {Promise<Object>} Category selection result
-     */
+    // Handle category selection
     async handleCategorySelection(categoryId = null) {
         if (categoryId) {
             const category = await this.dataManager.getCategory(categoryId);
@@ -212,12 +193,7 @@ class BusinessLogicManager {
         return { category: selectedCategory, source: 'user_selected' };
     }
 
-    /**
-     * Handle note creation form
-     * @param {Object} template - Selected template
-     * @param {Object} category - Selected category
-     * @returns {Promise<Object>} Note data
-     */
+    // Handle note creation form
     async handleNoteCreation(template, category) {
         // This would integrate with the existing note creation form
         // For now, return the basic structure that would be filled by the UI
@@ -239,11 +215,7 @@ class BusinessLogicManager {
         return noteData;
     }
 
-    /**
-     * Validate note data against business rules
-     * @param {Object} noteData - Note data to validate
-     * @returns {Promise<Object>} Validation result
-     */
+    // Validate note data against business rules
     async validateNoteData(noteData) {
         const validation = {
             isValid: true,
@@ -317,11 +289,7 @@ class BusinessLogicManager {
         return validation;
     }
 
-    /**
-     * Validate business rules
-     * @param {Object} noteData - Note data
-     * @param {Object} validation - Validation object to update
-     */
+    // Validate business rules
     async validateBusinessRules(noteData, validation) {
         const creationRules = this.businessRules.get('note_creation');
         
@@ -341,11 +309,7 @@ class BusinessLogicManager {
         }
     }
 
-    /**
-     * Save note with full business logic
-     * @param {Object} noteData - Note data to save
-     * @returns {Promise<Object>} Save result
-     */
+    // Save note with full business logic
     async saveNote(noteData) {
         try {
             // Get existing notes
@@ -371,10 +335,7 @@ class BusinessLogicManager {
         }
     }
 
-    /**
-     * Handle post-creation actions
-     * @param {Object} note - Created note
-     */
+    // Handle post-creation actions
     async handlePostCreationActions(note) {
         // Show success notification
         this.toastSystem.success(`Note "${note.title}" created successfully!`, {
@@ -400,11 +361,7 @@ class BusinessLogicManager {
         await this.performAutoBackup();
     }
 
-    /**
-     * Start note editing workflow
-     * @param {string} noteId - Note ID to edit
-     * @returns {Promise<Object>} Edit result
-     */
+    // Start note editing workflow
     async startNoteEditingWorkflow(noteId) {
         try {
             this.currentWorkflow = {
@@ -448,12 +405,7 @@ class BusinessLogicManager {
         }
     }
 
-    /**
-     * Complete note editing workflow
-     * @param {string} noteId - Note ID
-     * @param {Object} updatedData - Updated note data
-     * @returns {Promise<Object>} Update result
-     */
+    // Complete note editing workflow
     async completeNoteEditingWorkflow(noteId, updatedData) {
         try {
             // Step 1: Validate updated data
@@ -493,11 +445,7 @@ class BusinessLogicManager {
         }
     }
 
-    /**
-     * Start note deletion workflow
-     * @param {string} noteId - Note ID to delete
-     * @returns {Promise<Object>} Deletion result
-     */
+    // Start note deletion workflow
     async startNoteDeletionWorkflow(noteId) {
         try {
             this.currentWorkflow = {
@@ -554,11 +502,7 @@ class BusinessLogicManager {
         }
     }
 
-    /**
-     * Start export workflow
-     * @param {Object} exportOptions - Export configuration
-     * @returns {Promise<Object>} Export result
-     */
+    // Start export workflow
     async startExportWorkflow(exportOptions = {}) {
         try {
             this.currentWorkflow = {
@@ -622,11 +566,7 @@ class BusinessLogicManager {
         }
     }
 
-    /**
-     * Start import workflow
-     * @param {File} file - File to import
-     * @returns {Promise<Object>} Import result
-     */
+    // Start import workflow
     async startImportWorkflow(file) {
         try {
             this.currentWorkflow = {
@@ -698,9 +638,7 @@ class BusinessLogicManager {
         }
     }
 
-    /**
-     * Helper Methods
-     */
+    // Helper Methods
 
     async loadNoteForEditing(noteId) {
         const notes = JSON.parse(localStorage.getItem('notes') || '[]');
@@ -746,21 +684,6 @@ class BusinessLogicManager {
 
     async createNoteBackup(note) {
         const backupId = `backup_${Date.now()}_${note.id}`;
-        const backups = JSON.parse(localStorage.getItem('note_backups') || '{}');
-        
-        backups[backupId] = {
-            note: { ...note },
-            timestamp: new Date().toISOString(),
-            type: 'edit_backup'
-        };
-        
-        localStorage.setItem('note_backups', JSON.stringify(backups));
-        
-        return { backupId, success: true };
-    }
-
-    async createDeletionBackup(note) {
-        const backupId = `deletion_backup_${Date.now()}_${note.id}`;
         const backups = JSON.parse(localStorage.getItem('note_backups') || '{}');
         
         backups[backupId] = {

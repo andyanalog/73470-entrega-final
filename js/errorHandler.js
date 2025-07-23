@@ -1,8 +1,3 @@
-/**
- * Error Handling System - Production Version
- * Comprehensive error management with user-friendly feedback
- */
-
 class ErrorHandlingSystem {
     constructor(modalSystem, toastSystem) {
         this.modalSystem = modalSystem;
@@ -17,9 +12,7 @@ class ErrorHandlingSystem {
         this.initializeErrorCategories();
     }
 
-    /**
-     * Initialize error categories and their handling strategies
-     */
+    // Initialize error categories and their handling strategies
     initializeErrorCategories() {
         this.errorCategories = {
             NETWORK: {
@@ -74,9 +67,7 @@ class ErrorHandlingSystem {
         };
     }
 
-    /**
-     * Setup global error handlers
-     */
+    // Setup global error handlers
     setupGlobalErrorHandlers() {
         // Handle uncaught JavaScript errors
         window.addEventListener('error', (event) => {
@@ -117,9 +108,7 @@ class ErrorHandlingSystem {
         }, true);
     }
 
-    /**
-     * Setup network error handling
-     */
+    // Setup network error handling
     setupNetworkErrorHandling() {
         // Monitor online/offline status
         window.addEventListener('online', () => {
@@ -131,12 +120,7 @@ class ErrorHandlingSystem {
         });
     }
 
-    /**
-     * Main error handling method
-     * @param {Error|Object} error - Error object or error info
-     * @param {Object} context - Additional context
-     * @param {Object} options - Handling options
-     */
+    // Main error handling method
     async handleError(error, context = {}, options = {}) {
         try {
             // Normalize error object
@@ -168,12 +152,7 @@ class ErrorHandlingSystem {
         }
     }
 
-    /**
-     * Normalize error into consistent format
-     * @param {Error|Object} error - Raw error
-     * @param {Object} context - Additional context
-     * @returns {Object} Normalized error
-     */
+    // Normalize error into consistent format
     normalizeError(error, context = {}) {
         const normalized = {
             id: `error_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -198,11 +177,7 @@ class ErrorHandlingSystem {
         return normalized;
     }
 
-    /**
-     * Categorize error based on its characteristics
-     * @param {Object} error - Normalized error
-     * @returns {string} Error category
-     */
+    // Categorize error based on its characteristics
     categorizeError(error) {
         const message = (error.message || '').toLowerCase();
         const name = (error.name || '').toLowerCase();
@@ -246,12 +221,7 @@ class ErrorHandlingSystem {
         return 'UNKNOWN';
     }
 
-    /**
-     * Get handling strategy for error
-     * @param {Object} error - Normalized error
-     * @param {Object} options - Options
-     * @returns {Object} Handling strategy
-     */
+    // Get handling strategy for error
     getHandlingStrategy(error, options = {}) {
         const category = this.errorCategories[error.category] || this.errorCategories.UNKNOWN;
         
@@ -288,11 +258,7 @@ class ErrorHandlingSystem {
         return strategy;
     }
 
-    /**
-     * Execute error handling strategy
-     * @param {Object} error - Normalized error
-     * @param {Object} strategy - Handling strategy
-     */
+    // Execute error handling strategy
     async executeErrorStrategy(error, strategy) {
         if (strategy.silent) {
             return;
@@ -329,12 +295,7 @@ class ErrorHandlingSystem {
         }
     }
 
-    /**
-     * Show toast error notification
-     * @param {Object} error - Error object
-     * @param {Object} category - Error category
-     * @param {Object} strategy - Strategy object
-     */
+    // Show toast error notification
     async showToastError(error, category, strategy) {
         const actions = [];
         
@@ -358,12 +319,7 @@ class ErrorHandlingSystem {
         });
     }
 
-    /**
-     * Show modal error dialog
-     * @param {Object} error - Error object
-     * @param {Object} category - Error category
-     * @param {Object} strategy - Strategy object
-     */
+    // Show modal error dialog
     async showModalError(error, category, strategy) {
         const actions = [];
         
@@ -393,12 +349,7 @@ class ErrorHandlingSystem {
         }
     }
 
-    /**
-     * Show inline error (for form validation)
-     * @param {Object} error - Error object
-     * @param {Object} category - Error category
-     * @param {Object} strategy - Strategy object
-     */
+    // Show inline error (for form validation)
     async showInlineError(error, category, strategy) {
         // This would be called with a specific form field context
         const targetElement = error.context?.element;
@@ -410,23 +361,13 @@ class ErrorHandlingSystem {
         }
     }
 
-    /**
-     * Show offline banner
-     * @param {Object} error - Error object
-     * @param {Object} category - Error category
-     */
+    // Show offline banner
     async showOfflineBanner(error, category) {
         const banner = this.createOfflineBanner();
         document.body.appendChild(banner);
     }
 
-    /**
-     * Build comprehensive error message
-     * @param {Object} error - Error object
-     * @param {Object} category - Error category
-     * @param {Object} strategy - Strategy object
-     * @returns {string} Formatted message
-     */
+    // Build comprehensive error message
     buildErrorMessage(error, category, strategy) {
         let message = category.userMessage;
         
@@ -442,11 +383,7 @@ class ErrorHandlingSystem {
         return message;
     }
 
-    /**
-     * Highlight form field with error
-     * @param {HTMLElement} element - Target element
-     * @param {string} message - Error message
-     */
+    // Highlight form field with error
     highlightErrorField(element, message) {
         // Add error styling
         element.style.borderColor = '#dc3545';
@@ -483,10 +420,7 @@ class ErrorHandlingSystem {
         element.addEventListener('focus', clearError);
     }
 
-    /**
-     * Create offline banner
-     * @returns {HTMLElement} Banner element
-     */
+    // Create offline banner
     createOfflineBanner() {
         const banner = document.createElement('div');
         banner.id = 'offline-banner';
@@ -525,10 +459,7 @@ class ErrorHandlingSystem {
         return banner;
     }
 
-    /**
-     * Attempt to retry a failed operation
-     * @param {Object} error - Original error
-     */
+    // Attempt to retry a failed operation
     async attemptRetry(error) {
         const operation = error.context?.operation;
         if (!operation) return;
@@ -559,19 +490,12 @@ class ErrorHandlingSystem {
         }
     }
 
-    /**
-     * Register retry callback for an operation
-     * @param {string} operation - Operation identifier
-     * @param {Function} callback - Retry callback
-     */
+    // Register retry callback for an operation
     registerRetryCallback(operation, callback) {
         this.errorCallbacks.set(operation, callback);
     }
 
-    /**
-     * Handle storage quota errors
-     * @param {Object} error - Storage error
-     */
+    // Handle storage quota errors
     async handleStorageError(error) {
         const choices = [
             { value: 'clear_cache', label: 'Clear Cache', type: 'primary' },
@@ -596,9 +520,7 @@ class ErrorHandlingSystem {
         }
     }
 
-    /**
-     * Global error handlers for specific scenarios
-     */
+    // Global error handlers for specific scenarios
     handleGlobalError(error) {
         // Don't show UI for certain types of errors
         if (this.shouldIgnoreError(error)) {
@@ -641,9 +563,7 @@ class ErrorHandlingSystem {
         this.retryPendingOperations();
     }
 
-    /**
-     * Utility methods
-     */
+    // Utility methods
     shouldIgnoreError(error) {
         const ignoredMessages = [
             'Script error',
@@ -748,12 +668,7 @@ class ErrorHandlingSystem {
 
     // Public API methods for manual error reporting
 
-    /**
-     * Report a validation error
-     * @param {string} field - Field name
-     * @param {string} message - Error message
-     * @param {HTMLElement} element - Target element
-     */
+    // Report a validation error
     reportValidationError(field, message, element = null) {
         this.handleError({
             type: 'VALIDATION',
@@ -766,12 +681,7 @@ class ErrorHandlingSystem {
         });
     }
 
-    /**
-     * Report a network operation failure
-     * @param {string} operation - Operation name
-     * @param {Error} error - Network error
-     * @param {Function} retryCallback - Retry function
-     */
+    // Report a network operation failure
     reportNetworkError(operation, error, retryCallback = null) {
         if (retryCallback) {
             this.registerRetryCallback(operation, retryCallback);
@@ -784,11 +694,7 @@ class ErrorHandlingSystem {
         });
     }
 
-    /**
-     * Report a critical system error
-     * @param {string} message - Error message
-     * @param {Object} details - Additional details
-     */
+    // Report a critical system error
     reportCriticalError(message, details = {}) {
         this.handleError({
             message,
@@ -800,10 +706,7 @@ class ErrorHandlingSystem {
         });
     }
 
-    /**
-     * Get error statistics
-     * @returns {Object} Error statistics
-     */
+    // Get error statistics
     getErrorStatistics() {
         const stats = {
             total: this.errorLog.length,
@@ -825,10 +728,7 @@ class ErrorHandlingSystem {
         return stats;
     }
 
-    /**
-     * Export error log
-     * @returns {string} Error log as JSON
-     */
+    // Export error log
     exportErrorLog() {
         return JSON.stringify({
             exported: new Date().toISOString(),
@@ -837,17 +737,13 @@ class ErrorHandlingSystem {
         }, null, 2);
     }
 
-    /**
-     * Clear error log
-     */
+    // Clear error log
     clearErrorLog() {
         this.errorLog = [];
         this.retryAttempts.clear();
     }
 
-    /**
-     * Cleanup error handling system
-     */
+    // Cleanup error handling system
     cleanup() {
         this.clearErrorLog();
         this.errorCallbacks.clear();

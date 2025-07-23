@@ -1,9 +1,3 @@
-/**
- * Voice Note UI Module
- * Handles HTML element creation and events related to audio
- * Enhanced with RecordRTC support and editing mode
- */
-
 class VoiceNoteUI {
     constructor(audioManager) {
         this.audioManager = audioManager;
@@ -12,10 +6,7 @@ class VoiceNoteUI {
         this.currentAudio = null;
     }
 
-    /**
-     * Creates the audio recording interface in the new note form
-     * @param {string} containerId - ID of the container where to insert the UI
-     */
+    // Creates the audio recording interface in the new note form
     createRecordingInterface(containerId) {
         const container = document.getElementById(containerId);
         if (!container) return;
@@ -51,9 +42,7 @@ class VoiceNoteUI {
         this.setupRecordingEvents();
     }
 
-    /**
-     * Sets up events for recording buttons
-     */
+    // Sets up events for recording buttons
     setupRecordingEvents() {
         const recordBtn = document.getElementById('record-btn');
         const stopBtn = document.getElementById('stop-btn');
@@ -89,27 +78,19 @@ class VoiceNoteUI {
         });
     }
 
-    /**
-     * Starts audio recording
-     * @returns {Promise<boolean>}
-     */
+    // Starts audio recording
     async startRecording() {
         // Clear previous audio if exists
         this.clearExistingAudio();
         return await this.audioManager.startRecording();
     }
 
-    /**
-     * Stops audio recording
-     * @returns {Promise<Blob|null>}
-     */
+    // Stops audio recording
     async stopRecording() {
         return await this.audioManager.stopRecording();
     }
 
-    /**
-     * Clears existing audio in the form
-     */
+    // Clears existing audio in the form
     clearExistingAudio() {
         const audioPreview = document.getElementById('audio-preview');
         const audioDataInput = document.getElementById('audio-data');
@@ -123,10 +104,7 @@ class VoiceNoteUI {
         }
     }
 
-    /**
-     * Starts the recording timer
-     * @param {HTMLElement} timerDisplay - Element where to show the time
-     */
+    // Starts the recording timer
     startTimer(timerDisplay) {
         this.recordingStartTime = Date.now();
         this.recordingTimer = setInterval(() => {
@@ -135,9 +113,7 @@ class VoiceNoteUI {
         }, 1000);
     }
 
-    /**
-     * Pauses the recording timer (kept for compatibility but not used)
-     */
+    // Pauses the recording timer (kept for compatibility but not used)
     pauseTimer() {
         if (this.recordingTimer) {
             clearInterval(this.recordingTimer);
@@ -145,9 +121,7 @@ class VoiceNoteUI {
         }
     }
 
-    /**
-     * Stops the recording timer
-     */
+    // Stops the recording timer
     stopTimer() {
         if (this.recordingTimer) {
             clearInterval(this.recordingTimer);
@@ -155,10 +129,7 @@ class VoiceNoteUI {
         }
     }
 
-    /**
-     * Creates preview of recorded audio
-     * @param {Blob} audioBlob - Recorded audio blob
-     */
+    // Creates preview of recorded audio
     async createAudioPreview(audioBlob) {
         const previewContainer = document.getElementById('audio-preview');
         const audioDataInput = document.getElementById('audio-data');
@@ -195,10 +166,7 @@ class VoiceNoteUI {
         setTimeout(() => URL.revokeObjectURL(audioUrl), 10000);
     }
 
-    /**
-     * Shows existing audio in edit mode
-     * @param {string} base64Audio - Audio in base64
-     */
+    // Shows existing audio in edit mode
     displayExistingAudio(base64Audio) {
         const previewContainer = document.getElementById('audio-preview');
         if (!previewContainer || !base64Audio) return;
@@ -225,11 +193,7 @@ class VoiceNoteUI {
         `;
     }
 
-    /**
-     * Gets duration of an audio blob
-     * @param {Blob} audioBlob - Audio blob
-     * @returns {Promise<number>} Duration in seconds
-     */
+    // Gets duration of an audio blob
     getAudioDuration(audioBlob) {
         return new Promise((resolve) => {
             const audio = new Audio(URL.createObjectURL(audioBlob));
@@ -241,11 +205,7 @@ class VoiceNoteUI {
         });
     }
 
-    /**
-     * Formats file size
-     * @param {number} bytes - Size in bytes
-     * @returns {string} Formatted size
-     */
+    // Formats file size
     formatFileSize(bytes) {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
@@ -254,10 +214,7 @@ class VoiceNoteUI {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
     }
 
-    /**
-     * Plays preview audio
-     * @param {string} base64Audio - Audio in base64
-     */
+    // Plays preview audio
     playPreviewAudio(base64Audio) {
         // Stop current audio if exists
         if (this.currentAudio) {
@@ -287,9 +244,7 @@ class VoiceNoteUI {
         }
     }
 
-    /**
-     * Deletes preview audio
-     */
+    // Deletes preview audio
     deletePreviewAudio() {
         const previewContainer = document.getElementById('audio-preview');
         const audioDataInput = document.getElementById('audio-data');
@@ -311,9 +266,7 @@ class VoiceNoteUI {
         this.showAudioMessage('Audio deleted', 'success');
     }
 
-    /**
-     * Resets recording buttons to initial state
-     */
+    // Resets recording buttons to initial state
     resetRecordingButtons() {
         const recordBtn = document.getElementById('record-btn');
         const stopBtn = document.getElementById('stop-btn');
@@ -329,12 +282,7 @@ class VoiceNoteUI {
         }
     }
 
-    /**
-     * Creates audio visualization for existing notes
-     * @param {string} base64Audio - Audio in base64
-     * @param {number} noteIndex - Note index
-     * @returns {string} Audio player HTML
-     */
+    // Creates audio visualization for existing notes
     createAudioPlayer(base64Audio, noteIndex) {
         if (!base64Audio) return '';
         
@@ -361,11 +309,7 @@ class VoiceNoteUI {
         `;
     }
 
-    /**
-     * Plays audio from a specific note
-     * @param {string} base64Audio - Audio in base64
-     * @param {number} noteIndex - Note index
-     */
+    // Plays audio from a specific note
     playNoteAudio(base64Audio, noteIndex) {
         // Stop current audio
         if (this.currentAudio) {
@@ -385,10 +329,7 @@ class VoiceNoteUI {
         }
     }
 
-    /**
-     * Deletes audio from a specific note
-     * @param {number} noteIndex - Note index
-     */
+    // Deletes audio from a specific note
     deleteNoteAudio(noteIndex) {
         // This function will be called from main.js to maintain data logic there
         if (window.deleteNoteAudio) {
@@ -396,11 +337,7 @@ class VoiceNoteUI {
         }
     }
 
-    /**
-     * Shows an audio-related message
-     * @param {string} message - Message to show
-     * @param {string} type - Message type (success/error/info)
-     */
+    // Shows an audio-related message
     showAudioMessage(message, type = 'success') {
         const messageDiv = document.getElementById('new-note-message');
         if (messageDiv) {
@@ -411,9 +348,7 @@ class VoiceNoteUI {
         }
     }
 
-    /**
-     * Cleans up all audio resources
-     */
+    // Cleans up all audio resources
     cleanup() {
         this.stopTimer();
         
@@ -427,10 +362,7 @@ class VoiceNoteUI {
         }
     }
 
-    /**
-     * Gets current audio statistics
-     * @returns {Object|null} Audio statistics
-     */
+    // Gets current audio statistics
     getCurrentAudioStats() {
         if (this.audioManager) {
             return this.audioManager.getAudioInfo();

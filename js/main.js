@@ -1,9 +1,3 @@
-/**
- * Notes App - Main Application File (Production Version)
- * Complete note management system with enhanced features
- */
-
-// Global variables
 let notes = []
 let audioManager
 let voiceNoteUI
@@ -35,9 +29,7 @@ let appState = {
 // Debug mode toggle (for development only)
 const DEBUG_MODE = false
 
-/**
- * Development logger - only logs when DEBUG_MODE is true
- */
+// Development logger - only logs when DEBUG_MODE is true
 function debugLog(message, data = null) {
     if (DEBUG_MODE) {
         if (data) {
@@ -48,9 +40,7 @@ function debugLog(message, data = null) {
     }
 }
 
-/**
- * Initialize all systems
- */
+// Initialize all systems
 async function initializeEnhancedSystems() {
     try {
         // Initialize toast system first (needed for notifications)
@@ -84,9 +74,7 @@ async function initializeEnhancedSystems() {
     }
 }
 
-/**
- * Load application data using enhanced data manager
- */
+// Load application data using enhanced data manager
 async function loadApplicationData() {
     try {
         // Load settings first to configure the app
@@ -115,9 +103,7 @@ async function loadApplicationData() {
     }
 }
 
-/**
- * Enhanced notes loading with better error handling
- */
+// Enhanced notes loading with better error handling
 async function loadNotes() {
     try {
         const savedNotes = localStorage.getItem("notes")
@@ -165,9 +151,7 @@ async function loadNotes() {
     }
 }
 
-/**
- * Enhanced save notes with error handling
- */
+// Enhanced save notes with error handling
 async function saveNotes() {
     try {
         localStorage.setItem("notes", JSON.stringify(notes))
@@ -191,16 +175,12 @@ async function saveNotes() {
     }
 }
 
-/**
- * Generate unique note ID
- */
+// Generate unique note ID
 function generateNoteId() {
     return `note_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 }
 
-/**
- * Enhanced note creation workflow
- */
+// Enhanced note creation workflow
 async function createNoteWithWorkflow(templateId = null, categoryId = null) {
     try {
         const result = await businessLogic.startNoteCreationWorkflow({
@@ -229,9 +209,7 @@ async function createNoteWithWorkflow(templateId = null, categoryId = null) {
     }
 }
 
-/**
- * Enhanced note editing workflow
- */
+// Enhanced note editing workflow
 async function editNoteWithWorkflow(noteIndex) {
     try {
         if (noteIndex < 0 || noteIndex >= notes.length) {
@@ -250,9 +228,7 @@ async function editNoteWithWorkflow(noteIndex) {
     }
 }
 
-/**
- * Complete note editing workflow
- */
+// Complete note editing workflow
 async function completeNoteEdit(noteIndex, updatedData) {
     try {
         if (noteIndex < 0 || noteIndex >= notes.length) {
@@ -297,9 +273,7 @@ async function completeNoteEdit(noteIndex, updatedData) {
     }
 }
 
-/**
- * Enhanced note deletion with workflow
- */
+// Enhanced note deletion with workflow
 async function deleteNoteWithWorkflow(noteIndex) {
     try {
         if (noteIndex < 0 || noteIndex >= notes.length) {
@@ -350,9 +324,7 @@ async function deleteNoteWithWorkflow(noteIndex) {
     }
 }
 
-/**
- * Create and update the sidebar notes list
- */
+// Create and update the sidebar notes list
 function createSidebarNotesList() {
     let sidebarContainer = document.getElementById("sidebar-notes-list")
     if (!sidebarContainer) {
@@ -379,9 +351,7 @@ function createSidebarNotesList() {
     sidebarContainer.innerHTML = headerHTML + notesHTML
 }
 
-/**
- * Generate HTML for sidebar notes
- */
+// Generate HTML for sidebar notes
 function generateSidebarNotesHTML() {
     if (notes.length === 0) {
         return '<div class="sidebar-note-item" style="text-align: center; color: #adb5bd; font-style: italic;">No notes yet</div>'
@@ -410,9 +380,7 @@ function generateSidebarNotesHTML() {
         .join("")
 }
 
-/**
- * Update the sidebar notes list
- */
+// Update the sidebar notes list
 function updateSidebarNotesList() {
     const container = document.getElementById("sidebar-notes-container")
     const countElement = document.getElementById("sidebar-notes-count")
@@ -426,9 +394,7 @@ function updateSidebarNotesList() {
     }
 }
 
-/**
- * Handle clicking on a sidebar note
- */
+// Handle clicking on a sidebar note
 function selectSidebarNote(noteIndex) {
     if (noteIndex < 0 || noteIndex >= notes.length) return
 
@@ -437,9 +403,7 @@ function selectSidebarNote(noteIndex) {
     showNoteDetail(noteIndex)
 }
 
-/**
- * Show detailed view of a specific note
- */
+// Show detailed view of a specific note
 function showNoteDetail(noteIndex) {
     const note = notes[noteIndex]
     if (!note) return
@@ -484,9 +448,7 @@ function showNoteDetail(noteIndex) {
     showSection("note-detail")
 }
 
-/**
- * Create and show edit section
- */
+// Create and show edit section
 function createAndShowEditSection(note) {
     const editSection = createEditNoteSection()
     
@@ -540,9 +502,7 @@ function createAndShowEditSection(note) {
     }, 100)
 }
 
-/**
- * Create edit note section
- */
+// Create edit note section
 function createEditNoteSection() {
     let editSection = document.getElementById("edit-note")
     if (!editSection) {
@@ -555,9 +515,7 @@ function createEditNoteSection() {
     return editSection
 }
 
-/**
- * Handle edit note form submission
- */
+// Handle edit note form submission
 async function handleEditNoteSubmission(e) {
     e.preventDefault()
 
@@ -603,9 +561,7 @@ async function handleEditNoteSubmission(e) {
     }
 }
 
-/**
- * Exit edit mode
- */
+// Exit edit mode
 function exitEditMode() {
     const currentEditingIndex = editingNoteIndex
     editingNoteIndex = null
@@ -619,9 +575,7 @@ function exitEditMode() {
     }
 }
 
-/**
- * Show a section and hide others
- */
+// Show a section and hide others
 function showSection(sectionId) {
     const sections = document.querySelectorAll(".section")
     sections.forEach((section) => {
@@ -649,9 +603,7 @@ function showSection(sectionId) {
     }
 }
 
-/**
- * Initialize new note section
- */
+// Initialize new note section
 function initializeNewNoteSection() {
     if (editingNoteIndex === null) {
         const audioContainer = document.getElementById("audio-container")
@@ -674,9 +626,7 @@ function initializeNewNoteSection() {
     }
 }
 
-/**
- * Display all notes
- */
+// Display all notes
 function displayAllNotes() {
     const container = document.getElementById("notes-container")
 
@@ -721,9 +671,7 @@ function displayAllNotes() {
     container.innerHTML = html
 }
 
-/**
- * Update notes statistics
- */
+// Update notes statistics
 async function updateNotesStats() {
     const statsElement = document.getElementById("notes-stats")
     if (!statsElement) return
@@ -744,9 +692,7 @@ async function updateNotesStats() {
     }
 }
 
-/**
- * Setup enhanced event listeners
- */
+// Setup enhanced event listeners
 function setupEnhancedEventListeners() {
     // Enhanced note form submission
     const noteForm = document.getElementById("note-form")
@@ -787,9 +733,7 @@ function setupEnhancedEventListeners() {
     })
 }
 
-/**
- * Handle note form submission
- */
+// Handle note form submission
 async function handleNoteSubmission(e) {
     e.preventDefault()
 
@@ -840,9 +784,7 @@ async function handleNoteSubmission(e) {
     }
 }
 
-/**
- * Clear note form
- */
+// Clear note form
 function clearNoteForm() {
     const titleInput = document.getElementById("note-title")
     const contentInput = document.getElementById("note-content")
@@ -877,9 +819,7 @@ function clearNoteForm() {
     if (stopBtn) stopBtn.disabled = true
 }
 
-/**
- * Delete note audio
- */
+// Delete note audio
 async function deleteNoteAudio(noteIndex) {
     if (noteIndex >= 0 && noteIndex < notes.length) {
         try {
@@ -918,9 +858,7 @@ async function deleteNoteAudio(noteIndex) {
     }
 }
 
-/**
- * Export notes with enhanced workflow
- */
+// Export notes with enhanced workflow
 async function exportNotes() {
     try {
         const format = await modalSystem.showChoice({
@@ -954,9 +892,7 @@ async function exportNotes() {
     }
 }
 
-/**
- * Show message in UI element
- */
+// Show message in UI element
 function showMessage(container, message, type = "success") {
     if (!container) return
 
@@ -967,9 +903,7 @@ function showMessage(container, message, type = "success") {
     }, 3000)
 }
 
-/**
- * Update loading state for UI
- */
+// Update loading state for UI
 function updateLoadingState(operation, isLoading) {
     const loadingElements = document.querySelectorAll(`[data-loading="${operation}"]`)
     loadingElements.forEach(element => {
@@ -981,18 +915,14 @@ function updateLoadingState(operation, isLoading) {
     })
 }
 
-/**
- * Escape HTML to prevent XSS
- */
+// Escape HTML to prevent XSS
 function escapeHtml(text) {
     const div = document.createElement("div")
     div.textContent = text
     return div.innerHTML
 }
 
-/**
- * Show initial loading screen
- */
+// Show initial loading screen
 function showInitialLoader() {
     const loader = document.createElement('div')
     loader.id = 'initial-loader'
@@ -1029,9 +959,7 @@ function showInitialLoader() {
     document.body.appendChild(loader)
 }
 
-/**
- * Hide initial loading screen
- */
+// Hide initial loading screen
 function hideInitialLoader() {
     const loader = document.getElementById('initial-loader')
     if (loader) {
@@ -1045,9 +973,7 @@ function hideInitialLoader() {
     }
 }
 
-/**
- * Show fallback error when systems fail to initialize
- */
+// Show fallback error when systems fail to initialize
 function showFallbackError(message) {
     const fallback = document.createElement('div')
     fallback.style.cssText = `
@@ -1082,9 +1008,7 @@ function showFallbackError(message) {
     document.body.appendChild(fallback)
 }
 
-/**
- * Perform system health check
- */
+// Perform system health check
 async function performSystemHealthCheck() {
     try {
         const healthCheck = await dataManager.performHealthCheck()
@@ -1102,9 +1026,7 @@ async function performSystemHealthCheck() {
     }
 }
 
-/**
- * Initialize audio systems with better error handling
- */
+// Initialize audio systems with better error handling
 async function initializeAudioSystems() {
     try {
         if (!window.RecordRTC) {
@@ -1148,9 +1070,7 @@ async function initializeAudioSystems() {
     }
 }
 
-/**
- * Handle initialization errors
- */
+// Handle initialization errors
 async function handleInitializationError(error) {
     hideInitialLoader()
     
@@ -1169,9 +1089,7 @@ async function handleInitializationError(error) {
     }
 }
 
-/**
- * Setup global functions for HTML event handlers
- */
+// Setup global functions for HTML event handlers
 function setupGlobalFunctions() {
     // Make functions globally available for HTML onclick handlers
     window.showSection = showSection
@@ -1188,9 +1106,7 @@ function setupGlobalFunctions() {
     window.confirmDeleteNote = deleteNoteWithWorkflow
 }
 
-/**
- * Initialize the complete enhanced application
- */
+// Initialize the complete enhanced application
 async function initializeEnhancedApplication() {
     try {
         debugLog('Starting Enhanced Notes App initialization...')
@@ -1235,21 +1151,19 @@ async function initializeEnhancedApplication() {
         hideInitialLoader()
         
         // Show success notification
-        toastSystem.success('🎉 Enhanced Notes App ready! New features unlocked.')
+        toastSystem.success('🎉 Notes App ready! New features unlocked.')
         
         // Perform health check
         setTimeout(performSystemHealthCheck, 1000)
         
-        debugLog('Enhanced Notes App fully initialized!')
+        debugLog('Notes App fully initialized!')
         
     } catch (error) {
         await handleInitializationError(error)
     }
 }
 
-/**
- * Main application entry point
- */
+// Main application entry point
 async function main() {
     try {
         // Check for required dependencies
@@ -1273,9 +1187,7 @@ async function main() {
     }
 }
 
-/**
- * Cleanup function for page unload
- */
+// Cleanup function for page unload
 function cleanup() {
     try {
         if (voiceNoteUI) voiceNoteUI.cleanup()

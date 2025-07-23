@@ -1,8 +1,3 @@
-/**
- * Custom Modal System - Replaces browser dialogs with beautiful UX
- * Provides confirm, alert, prompt, and custom modal functionality
- */
-
 class CustomModalSystem {
     constructor() {
         this.modals = new Map();
@@ -15,9 +10,7 @@ class CustomModalSystem {
         this.injectModalStyles();
     }
 
-    /**
-     * Create the main modal container
-     */
+    // Create the main modal container
     createModalContainer() {
         if (this.modalContainer) return;
 
@@ -27,9 +20,7 @@ class CustomModalSystem {
         document.body.appendChild(this.modalContainer);
     }
 
-    /**
-     * Inject modal styles
-     */
+    // Inject modal styles
     injectModalStyles() {
         if (document.getElementById('modal-styles')) return;
 
@@ -283,9 +274,7 @@ class CustomModalSystem {
         document.head.appendChild(styles);
     }
 
-    /**
-     * Setup keyboard event handlers
-     */
+    // Setup keyboard event handlers
     setupKeyboardHandlers() {
         document.addEventListener('keydown', (e) => {
             if (!this.activeModal) return;
@@ -309,10 +298,7 @@ class CustomModalSystem {
         });
     }
 
-    /**
-     * Handle tab navigation within modal
-     * @param {KeyboardEvent} e - Keyboard event
-     */
+    // Handle tab navigation within modal
     handleTabNavigation(e) {
         if (!this.activeModal) return;
 
@@ -336,11 +322,7 @@ class CustomModalSystem {
         }
     }
 
-    /**
-     * Show a confirmation dialog
-     * @param {Object} options - Configuration options
-     * @returns {Promise<boolean>} User's choice
-     */
+    // Show a confirmation dialog
     confirm(options = {}) {
         const {
             title = 'Confirm Action',
@@ -354,480 +336,6 @@ class CustomModalSystem {
 
         return new Promise((resolve) => {
             const modalId = this.generateModalId();
-            
-            const modalHTML = `
-                <div class="modal-overlay">
-                    <div class="modal">
-                        <div class="modal-header">
-                            <h3 class="modal-title">
-                                <span class="modal-icon">${icon}</span>
-                                ${this.escapeHtml(title)}
-                            </h3>
-                        </div>
-                        <div class="modal-body">
-                            <p class="modal-message">${this.escapeHtml(message)}</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="modal-button outline" data-action="cancel">
-                                ${this.escapeHtml(cancelText)}
-                            </button>
-                            <button type="button" class="modal-button ${dangerousAction ? 'danger' : type}" data-action="confirm">
-                                ${this.escapeHtml(confirmText)}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            this.showModal(modalId, modalHTML, {
-                onAction: (action) => {
-                    this.closeModal(modalId);
-                    resolve(action === 'confirm');
-                },
-                focusButton: dangerousAction ? 'cancel' : 'confirm'
-            });
-        });
-    }
-
-    /**
-     * Show an alert dialog
-     * @param {Object} options - Configuration options
-     * @returns {Promise<void>}
-     */
-    alert(options = {}) {
-        const {
-            title = 'Information',
-            message = '',
-            icon = 'ℹ️',
-            buttonText = 'OK',
-            type = 'primary'
-        } = options;
-
-        return new Promise((resolve) => {
-            const modalId = this.generateModalId();
-            
-            const modalHTML = `
-                <div class="modal-overlay">
-                    <div class="modal">
-                        <div class="modal-header">
-                            <h3 class="modal-title">
-                                <span class="modal-icon">${icon}</span>
-                                ${this.escapeHtml(title)}
-                            </h3>
-                        </div>
-                        <div class="modal-body">
-                            <p class="modal-message">${this.escapeHtml(message)}</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="modal-button ${type}" data-action="ok">
-                                ${this.escapeHtml(buttonText)}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            this.showModal(modalId, modalHTML, {
-                onAction: () => {
-                    this.closeModal(modalId);
-                    resolve();
-                },
-                focusButton: 'ok'
-            });
-        });
-    }
-
-    /**
-     * Show a prompt dialog
-     * @param {Object} options - Configuration options
-     * @returns {Promise<string|null>} User input or null if cancelled
-     */
-    prompt(options = {}) {
-        const {
-            title = 'Input Required',
-            message = 'Please enter a value:',
-            icon = '✏️',
-            placeholder = '',
-            defaultValue = '',
-            confirmText = 'OK',
-            cancelText = 'Cancel',
-            inputType = 'text',
-            required = false,
-            maxLength = null
-        } = options;
-
-        return new Promise((resolve) => {
-            const modalId = this.generateModalId();
-            
-            const modalHTML = `
-                <div class="modal-overlay">
-                    <div class="modal">
-                        <div class="modal-header">
-                            <h3 class="modal-title">
-                                <span class="modal-icon">${icon}</span>
-                                ${this.escapeHtml(title)}
-                            </h3>
-                        </div>
-                        <div class="modal-body">
-                            <p class="modal-message">${this.escapeHtml(message)}</p>
-                            <input 
-                                type="${inputType}" 
-                                class="modal-input" 
-                                placeholder="${this.escapeHtml(placeholder)}"
-                                value="${this.escapeHtml(defaultValue)}"
-                                ${maxLength ? `maxlength="${maxLength}"` : ''}
-                                ${required ? 'required' : ''}
-                            >
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="modal-button outline" data-action="cancel">
-                                ${this.escapeHtml(cancelText)}
-                            </button>
-                            <button type="button" class="modal-button primary" data-action="confirm">
-                                ${this.escapeHtml(confirmText)}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            this.showModal(modalId, modalHTML, {
-                onAction: (action) => {
-                    const input = this.activeModal.querySelector('.modal-input');
-                    const value = input ? input.value.trim() : '';
-                    
-                    if (action === 'confirm') {
-                        if (required && !value) {
-                            input.style.borderColor = '#dc3545';
-                            input.focus();
-                            return; // Don't close modal
-                        }
-                        this.closeModal(modalId);
-                        resolve(value);
-                    } else {
-                        this.closeModal(modalId);
-                        resolve(null);
-                    }
-                },
-                onShow: () => {
-                    const input = this.activeModal.querySelector('.modal-input');
-                    if (input) {
-                        input.focus();
-                        input.select();
-                        
-                        // Handle Enter key in input
-                        input.addEventListener('keydown', (e) => {
-                            if (e.key === 'Enter') {
-                                e.preventDefault();
-                                const confirmButton = this.activeModal.querySelector('[data-action="confirm"]');
-                                if (confirmButton) confirmButton.click();
-                            }
-                        });
-                    }
-                }
-            });
-        });
-    }
-
-    /**
-     * Show a loading modal
-     * @param {Object} options - Configuration options
-     * @returns {Function} Function to close the loading modal
-     */
-    showLoading(options = {}) {
-        const {
-            title = 'Loading...',
-            message = 'Please wait while we process your request.',
-            icon = '⏳'
-        } = options;
-
-        const modalId = this.generateModalId();
-        
-        const modalHTML = `
-            <div class="modal-overlay">
-                <div class="modal">
-                    <div class="modal-header">
-                        <h3 class="modal-title">
-                            <span class="modal-icon">${icon}</span>
-                            ${this.escapeHtml(title)}
-                        </h3>
-                    </div>
-                    <div class="modal-loading">
-                        <div class="modal-spinner"></div>
-                    </div>
-                    <div class="modal-body">
-                        <p class="modal-message">${this.escapeHtml(message)}</p>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        this.showModal(modalId, modalHTML, {
-            closeOnOverlay: false,
-            closeOnEscape: false
-        });
-
-        // Return function to close loading modal
-        return () => this.closeModal(modalId);
-    }
-
-    /**
-     * Show a custom modal
-     * @param {string} modalId - Unique modal identifier
-     * @param {string} html - Modal HTML content
-     * @param {Object} options - Configuration options
-     */
-    showModal(modalId, html, options = {}) {
-        const {
-            onAction = () => {},
-            onShow = () => {},
-            onClose = () => {},
-            closeOnOverlay = true,
-            closeOnEscape = true,
-            focusButton = null
-        } = options;
-
-        // Close existing modal if any
-        if (this.activeModal) {
-            this.modalStack.push(this.activeModal);
-        }
-
-        // Create modal element
-        const modalElement = document.createElement('div');
-        modalElement.className = 'modal-wrapper';
-        modalElement.innerHTML = html;
-        
-        this.modalContainer.appendChild(modalElement);
-        this.modals.set(modalId, modalElement);
-        this.activeModal = modalElement;
-
-        // Setup event listeners
-        this.setupModalEventListeners(modalElement, {
-            onAction,
-            onClose,
-            closeOnOverlay,
-            closeOnEscape
-        });
-
-        // Show modal with animation
-        requestAnimationFrame(() => {
-            const overlay = modalElement.querySelector('.modal-overlay');
-            const modal = modalElement.querySelector('.modal');
-            
-            if (overlay) overlay.classList.add('active');
-            if (modal) modal.classList.add('active');
-            
-            // Focus management
-            if (focusButton) {
-                const button = modalElement.querySelector(`[data-action="${focusButton}"]`);
-                if (button) {
-                    setTimeout(() => button.focus(), 100);
-                }
-            }
-            
-            // Call onShow callback
-            onShow();
-        });
-    }
-
-    /**
-     * Setup event listeners for a modal
-     * @param {HTMLElement} modalElement - Modal element
-     * @param {Object} options - Event options
-     */
-    setupModalEventListeners(modalElement, options) {
-        const { onAction, onClose, closeOnOverlay, closeOnEscape } = options;
-
-        // Button click handlers
-        modalElement.addEventListener('click', (e) => {
-            const action = e.target.dataset.action;
-            if (action) {
-                e.preventDefault();
-                e.stopPropagation();
-                onAction(action, e.target);
-            }
-        });
-
-        // Overlay click handler
-        if (closeOnOverlay) {
-            const overlay = modalElement.querySelector('.modal-overlay');
-            if (overlay) {
-                overlay.addEventListener('click', (e) => {
-                    if (e.target === overlay) {
-                        this.closeModal();
-                    }
-                });
-            }
-        }
-    }
-
-    /**
-     * Close a modal
-     * @param {string} modalId - Modal ID to close (optional)
-     */
-    closeModal(modalId = null) {
-        let modalToClose = modalId ? this.modals.get(modalId) : this.activeModal;
-        
-        if (!modalToClose) return;
-
-        // Animate out
-        const overlay = modalToClose.querySelector('.modal-overlay');
-        const modal = modalToClose.querySelector('.modal');
-        
-        if (overlay) overlay.classList.remove('active');
-        if (modal) {
-            modal.classList.remove('active');
-            modal.classList.add('modal-exit');
-        }
-
-        // Remove after animation
-        setTimeout(() => {
-            if (modalToClose.parentNode) {
-                modalToClose.parentNode.removeChild(modalToClose);
-            }
-            
-            if (modalId) {
-                this.modals.delete(modalId);
-            }
-            
-            // Handle modal stack
-            if (this.activeModal === modalToClose) {
-                this.activeModal = this.modalStack.pop() || null;
-            }
-        }, 200);
-    }
-
-    /**
-     * Close all modals
-     */
-    closeAllModals() {
-        this.modals.forEach((modal, id) => {
-            this.closeModal(id);
-        });
-        this.modalStack = [];
-        this.activeModal = null;
-    }
-
-    /**
-     * Generate unique modal ID
-     * @returns {string} Unique ID
-     */
-    generateModalId() {
-        return `modal_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    }
-
-    /**
-     * Escape HTML to prevent XSS
-     * @param {string} text - Text to escape
-     * @returns {string} Escaped text
-     */
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-
-    /**
-     * Show success message modal
-     * @param {string} message - Success message
-     * @param {Object} options - Additional options
-     */
-    showSuccess(message, options = {}) {
-        return this.alert({
-            title: 'Success',
-            message,
-            icon: '✅',
-            type: 'primary',
-            ...options
-        });
-    }
-
-    /**
-     * Show error message modal
-     * @param {string} message - Error message
-     * @param {Object} options - Additional options
-     */
-    showError(message, options = {}) {
-        return this.alert({
-            title: 'Error',
-            message,
-            icon: '❌',
-            type: 'danger',
-            ...options
-        });
-    }
-
-    /**
-     * Show warning message modal
-     * @param {string} message - Warning message
-     * @param {Object} options - Additional options
-     */
-    showWarning(message, options = {}) {
-        return this.alert({
-            title: 'Warning',
-            message,
-            icon: '⚠️',
-            type: 'secondary',
-            ...options
-        });
-    }
-
-    /**
-     * Show info message modal
-     * @param {string} message - Info message
-     * @param {Object} options - Additional options
-     */
-    showInfo(message, options = {}) {
-        return this.alert({
-            title: 'Information',
-            message,
-            icon: 'ℹ️',
-            type: 'primary',
-            ...options
-        });
-    }
-
-    /**
-     * Show delete confirmation dialog
-     * @param {string} itemName - Name of item to delete
-     * @param {Object} options - Additional options
-     */
-    confirmDelete(itemName, options = {}) {
-        return this.confirm({
-            title: 'Delete Confirmation',
-            message: `Are you sure you want to delete "${itemName}"?\n\nThis action cannot be undone.`,
-            icon: '🗑️',
-            confirmText: 'Delete',
-            cancelText: 'Keep',
-            dangerousAction: true,
-            ...options
-        });
-    }
-
-    /**
-     * Show custom choice dialog
-     * @param {Object} options - Configuration options
-     * @returns {Promise<string|null>} Selected choice or null
-     */
-    showChoice(options = {}) {
-        const {
-            title = 'Choose Option',
-            message = 'Please select an option:',
-            icon = '🤔',
-            choices = [
-                { value: 'option1', label: 'Option 1', type: 'primary' },
-                { value: 'option2', label: 'Option 2', type: 'secondary' }
-            ]
-        } = options;
-
-        return new Promise((resolve) => {
-            const modalId = this.generateModalId();
-            
-            const choiceButtons = choices.map(choice => 
-                `<button type="button" class="modal-button ${choice.type || 'outline'}" data-action="choice" data-value="${choice.value}">
-                    ${this.escapeHtml(choice.label)}
-                </button>`
-            ).join('');
             
             const modalHTML = `
                 <div class="modal-overlay">
@@ -866,11 +374,7 @@ class CustomModalSystem {
         });
     }
 
-    /**
-     * Show progress modal with updates
-     * @param {Object} options - Configuration options
-     * @returns {Object} Progress controller
-     */
+    // Show progress modal with updates
     showProgress(options = {}) {
         const {
             title = 'Processing...',
@@ -931,9 +435,7 @@ class CustomModalSystem {
         };
     }
 
-    /**
-     * Clean up modal system
-     */
+    // Clean up modal system
     cleanup() {
         this.closeAllModals();
         

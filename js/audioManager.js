@@ -1,8 +1,3 @@
-/**
- * Audio Manager - Production Version
- * Handles audio recording and playback using RecordRTC
- */
-
 class AudioManager {
     constructor() {
         this.recorder = null;
@@ -11,10 +6,7 @@ class AudioManager {
         this.recordedBlob = null;
     }
 
-    /**
-     * Initialize microphone access
-     * @returns {Promise<boolean>} true if successful, false otherwise
-     */
+    // Initialize microphone access
     async initializeMicrophone() {
         try {
             this.stream = await navigator.mediaDevices.getUserMedia({ 
@@ -31,10 +23,7 @@ class AudioManager {
         }
     }
 
-    /**
-     * Start audio recording using RecordRTC
-     * @returns {Promise<boolean>} true if recording started successfully
-     */
+    // Start audio recording using RecordRTC
     async startRecording() {
         if (this.isRecording) return false;
 
@@ -73,10 +62,7 @@ class AudioManager {
         }
     }
 
-    /**
-     * Stop recording and generate audio blob
-     * @returns {Promise<Blob|null>} Audio blob or null if failed
-     */
+    // Stop recording and generate audio blob
     stopRecording() {
         return new Promise((resolve) => {
             if (!this.isRecording || !this.recorder) {
@@ -92,11 +78,7 @@ class AudioManager {
         });
     }
 
-    /**
-     * Convert audio blob to base64 for storage
-     * @param {Blob} audioBlob - Audio blob to convert
-     * @returns {Promise<string>} Base64 encoded audio data
-     */
+    // Convert audio blob to base64 for storage
     blobToBase64(audioBlob) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -106,11 +88,7 @@ class AudioManager {
         });
     }
 
-    /**
-     * Convert base64 to blob for playback
-     * @param {string} base64String - Base64 encoded audio data
-     * @returns {Blob} Audio blob
-     */
+    // Convert base64 to blob for playback
     base64ToBlob(base64String) {
         const [header, data] = base64String.split(',');
         const mimeType = header.match(/:(.*?);/)[1];
@@ -125,11 +103,7 @@ class AudioManager {
         return new Blob([byteArray], { type: mimeType });
     }
 
-    /**
-     * Play audio from base64 data
-     * @param {string} base64Audio - Base64 encoded audio
-     * @returns {HTMLAudioElement} Audio element for control
-     */
+    // Play audio from base64 data
     playAudio(base64Audio) {
         const audioBlob = this.base64ToBlob(base64Audio);
         const audioUrl = URL.createObjectURL(audioBlob);
@@ -147,10 +121,7 @@ class AudioManager {
         return audio;
     }
 
-    /**
-     * Get current recording duration in seconds
-     * @returns {number} Duration in seconds
-     */
+    // Get current recording duration in seconds
     getCurrentRecordingDuration() {
         if (this.recorder && this.isRecording) {
             return this.recorder.getRecordingDuration() / 1000;
@@ -158,9 +129,7 @@ class AudioManager {
         return 0;
     }
 
-    /**
-     * Clean up audio resources
-     */
+    // Clean up audio resources
     cleanup() {
         if (this.recorder) {
             if (this.isRecording) {
@@ -183,31 +152,21 @@ class AudioManager {
         this.recordedBlob = null;
     }
 
-    /**
-     * Check browser compatibility for audio recording
-     * @returns {boolean} true if recording is supported
-     */
+    // Check browser compatibility for audio recording
     static isSupported() {
         return !!(navigator.mediaDevices && 
                  navigator.mediaDevices.getUserMedia && 
                  window.RecordRTC);
     }
 
-    /**
-     * Format duration in mm:ss format
-     * @param {number} seconds - Duration in seconds
-     * @returns {string} Formatted duration string
-     */
+    // Format duration in mm:ss format
     static formatDuration(seconds) {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = Math.floor(seconds % 60);
         return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
     }
 
-    /**
-     * Get detailed audio information
-     * @returns {Object|null} Audio information object
-     */
+    // Get detailed audio information
     getAudioInfo() {
         if (this.recordedBlob) {
             return {
@@ -220,12 +179,7 @@ class AudioManager {
         return null;
     }
 
-    /**
-     * Convert audio to different formats (placeholder for future implementation)
-     * @param {Blob} audioBlob - Original audio blob
-     * @param {string} targetFormat - Target format
-     * @returns {Promise<Blob>} Converted audio blob
-     */
+    // Convert audio to different formats (placeholder for future implementation)
     async convertAudioFormat(audioBlob, targetFormat = 'webm') {
         // For future implementation of format conversion
         // Currently returns the original blob
