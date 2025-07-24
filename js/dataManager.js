@@ -1,4 +1,4 @@
-class EnhancedDataManager {
+class DataManager {
     constructor() {
         this.cache = new Map();
         this.isOnline = navigator.onLine;
@@ -524,7 +524,7 @@ class EnhancedDataManager {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    // Show message to user with enhanced UX
+    // Show message to user with UX
     showMessage(message, type = 'info', icon = '') {
         // Create or find message container
         let messageContainer = document.getElementById('global-messages');
@@ -799,4 +799,4 @@ class EnhancedDataManager {
 }
 
 // Export for global use
-window.EnhancedDataManager = EnhancedDataManager;
+window.DataManager = DataManager;

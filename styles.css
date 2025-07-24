@@ -316,7 +316,7 @@ textarea {
   line-height: 1.6;
 }
 
-/* Enhanced form fields for editing */
+/* form fields for editing */
 input[type="text"].prefilled,
 textarea.prefilled {
   background: #ffffff;

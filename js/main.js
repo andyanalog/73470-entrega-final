@@ -41,7 +41,7 @@ function debugLog(message, data = null) {
 }
 
 // Initialize all systems
-async function initializeEnhancedSystems() {
+async function initializeSystems() {
     try {
         // Initialize toast system first (needed for notifications)
         toastSystem = new ToastNotificationSystem()
@@ -52,8 +52,8 @@ async function initializeEnhancedSystems() {
         // Initialize error handler (needs modal and toast systems)
         errorHandler = new ErrorHandlingSystem(modalSystem, toastSystem)
         
-        // Initialize enhanced data manager
-        dataManager = new EnhancedDataManager()
+        // Initialize data manager
+        dataManager = new DataManager()
         
         // Initialize business logic manager
         businessLogic = new BusinessLogicManager(dataManager, modalSystem, toastSystem)
@@ -65,7 +65,7 @@ async function initializeEnhancedSystems() {
         window.businessLogic = businessLogic
         window.dataManager = dataManager
         
-        debugLog('Enhanced systems initialized successfully')
+        debugLog('Systems initialized successfully')
         return true
         
     } catch (error) {
@@ -74,7 +74,7 @@ async function initializeEnhancedSystems() {
     }
 }
 
-// Load application data using enhanced data manager
+// Load application data using data manager
 async function loadApplicationData() {
     try {
         // Load settings first to configure the app
@@ -103,7 +103,7 @@ async function loadApplicationData() {
     }
 }
 
-// Enhanced notes loading with better error handling
+// notes loading with better error handling
 async function loadNotes() {
     try {
         const savedNotes = localStorage.getItem("notes")
@@ -125,7 +125,7 @@ async function loadNotes() {
             
             debugLog(`Loaded ${notes.length} existing notes`)
         } else {
-            // Load sample data using enhanced data manager
+            // Load sample data using data manager
             try {
                 const sampleNotes = await dataManager.loadNotes()
                 if (sampleNotes.length > 0) {
@@ -151,7 +151,7 @@ async function loadNotes() {
     }
 }
 
-// Enhanced save notes with error handling
+// save notes with error handling
 async function saveNotes() {
     try {
         localStorage.setItem("notes", JSON.stringify(notes))
@@ -180,7 +180,7 @@ function generateNoteId() {
     return `note_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 }
 
-// Enhanced note creation workflow
+// note creation workflow
 async function createNoteWithWorkflow(templateId = null, categoryId = null) {
     try {
         const result = await businessLogic.startNoteCreationWorkflow({
@@ -209,7 +209,7 @@ async function createNoteWithWorkflow(templateId = null, categoryId = null) {
     }
 }
 
-// Enhanced note editing workflow
+// note editing workflow
 async function editNoteWithWorkflow(noteIndex) {
     try {
         if (noteIndex < 0 || noteIndex >= notes.length) {
@@ -273,7 +273,7 @@ async function completeNoteEdit(noteIndex, updatedData) {
     }
 }
 
-// Enhanced note deletion with workflow
+// note deletion with workflow
 async function deleteNoteWithWorkflow(noteIndex) {
     try {
         if (noteIndex < 0 || noteIndex >= notes.length) {
@@ -703,9 +703,9 @@ async function updateNotesStats() {
     }
 }
 
-// Setup enhanced event listeners
-function setupEnhancedEventListeners() {
-    // Enhanced note form submission
+// Setup event listeners
+function setupEventListeners() {
+    // note form submission
     const noteForm = document.getElementById("note-form")
     if (noteForm) {
         noteForm.addEventListener("submit", handleNoteSubmission)
@@ -869,7 +869,7 @@ async function deleteNoteAudio(noteIndex) {
     }
 }
 
-// Export notes with enhanced workflow
+// Export notes with workflow
 async function exportNotes() {
     try {
         const format = await modalSystem.showChoice({
@@ -1117,16 +1117,16 @@ function setupGlobalFunctions() {
     window.confirmDeleteNote = deleteNoteWithWorkflow
 }
 
-// Initialize the complete enhanced application
-async function initializeEnhancedApplication() {
+// Initialize the complete application
+async function initializeApplication() {
     try {
-        debugLog('Starting Enhanced Notes App initialization...')
+        debugLog('Starting Notes App initialization...')
         
         // Show loading screen
         showInitialLoader()
         
         // Initialize core systems
-        await initializeEnhancedSystems()
+        await initializeSystems()
         debugLog('Core systems initialized')
         
         // Load application data
@@ -1142,7 +1142,7 @@ async function initializeEnhancedApplication() {
         debugLog('UI components created')
         
         // Setup event listeners
-        setupEnhancedEventListeners()
+        setupEventListeners()
         setupGlobalFunctions()
         debugLog('Event listeners configured')
         
@@ -1180,7 +1180,7 @@ async function main() {
         // Check for required dependencies
         const missingDeps = []
         
-        if (!window.EnhancedDataManager) missingDeps.push('EnhancedDataManager')
+        if (!window.DataManager) missingDeps.push('DataManager')
         if (!window.CustomModalSystem) missingDeps.push('CustomModalSystem')
         if (!window.ToastNotificationSystem) missingDeps.push('ToastNotificationSystem')
         if (!window.ErrorHandlingSystem) missingDeps.push('ErrorHandlingSystem')
@@ -1190,8 +1190,8 @@ async function main() {
             throw new Error(`Missing required dependencies: ${missingDeps.join(', ')}. Please ensure all script files are loaded.`)
         }
         
-        // Initialize enhanced application
-        await initializeEnhancedApplication()
+        // Initialize application
+        await initializeApplication()
         
     } catch (error) {
         showFallbackError(`Critical initialization error: ${error.message}`)
