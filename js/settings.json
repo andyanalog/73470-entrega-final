@@ -147,9 +147,6 @@
         "inApp": true
       },
       "shortcuts": {
-        "newNote": "Ctrl+N",
-        "search": "Ctrl+F",
-        "save": "Ctrl+S",
         "export": "Ctrl+E"
       },
       "accessibility": {
