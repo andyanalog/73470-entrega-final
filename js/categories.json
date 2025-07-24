@@ -9,7 +9,7 @@
       "isDefault": true,
       "isActive": true,
       "sortOrder": 1,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "work",
@@ -20,7 +20,7 @@
       "isDefault": true,
       "isActive": true,
       "sortOrder": 2,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "personal",
@@ -31,7 +31,7 @@
       "isDefault": true,
       "isActive": true,
       "sortOrder": 3,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "education",
@@ -42,7 +42,7 @@
       "isDefault": true,
       "isActive": true,
       "sortOrder": 4,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "health",
@@ -53,7 +53,7 @@
       "isDefault": false,
       "isActive": true,
       "sortOrder": 5,
-      "createdAt": "2024-07-12T00:00:00.000Z"
+      "createdAt": "2025-07-12T00:00:00.000Z"
     },
     {
       "id": "travel",
@@ -64,7 +64,7 @@
       "isDefault": false,
       "isActive": true,
       "sortOrder": 6,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "creative",
@@ -75,7 +75,7 @@
       "isDefault": false,
       "isActive": true,
       "sortOrder": 7,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "finance",
@@ -86,7 +86,7 @@
       "isDefault": false,
       "isActive": true,
       "sortOrder": 8,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "ideas",
@@ -97,7 +97,7 @@
       "isDefault": false,
       "isActive": true,
       "sortOrder": 9,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "archived",
@@ -108,13 +108,13 @@
       "isDefault": false,
       "isActive": false,
       "sortOrder": 99,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     }
   ],
   "metadata": {
     "totalCategories": 10,
     "activeCategories": 9,
-    "lastUpdated": "2024-07-21T12:00:00.000Z",
+    "lastUpdated": "2025-07-21T12:00:00.000Z",
     "version": "1.0.0"
   }
 }

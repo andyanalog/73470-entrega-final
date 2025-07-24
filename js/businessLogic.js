@@ -40,7 +40,7 @@ class BusinessLogicManager {
             preventDeleteWithNotes: true
         });
 
-        // Export/Import rules
+        // Export rules
         this.businessRules.set('data_export', {
             includeMetadata: true,
             includeAudio: true,

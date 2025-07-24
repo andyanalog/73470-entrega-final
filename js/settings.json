@@ -2,7 +2,7 @@
   "appSettings": {
     "version": "2.1.0",
     "appName": "Notes App",
-    "lastUpdated": "2024-07-21T12:00:00.000Z",
+    "lastUpdated": "2025-07-21T12:00:00.000Z",
     "features": {
       "voiceNotes": {
         "enabled": true,
@@ -134,8 +134,8 @@
   },
   "userPreferences": {
     "userId": "default_user",
-    "profileCreated": "2024-07-01T00:00:00.000Z",
-    "lastLogin": "2024-07-21T12:00:00.000Z",
+    "profileCreated": "2025-07-01T00:00:00.000Z",
+    "lastLogin": "2025-07-21T12:00:00.000Z",
     "preferences": {
       "language": "en",
       "timezone": "UTC",
@@ -187,7 +187,7 @@
       "localStorage": true,
       "webGL": true
     },
-    "lastSystemCheck": "2024-07-21T12:00:00.000Z"
+    "lastSystemCheck": "2025-07-21T12:00:00.000Z"
   },
   "migration": {
     "currentVersion": "2.1.0",
@@ -195,13 +195,13 @@
       {
         "from": "1.0.0",
         "to": "2.0.0",
-        "date": "2024-07-15T00:00:00.000Z",
+        "date": "2025-07-15T00:00:00.000Z",
         "changes": ["Added voice notes", "UI", "Added categories"]
       },
       {
         "from": "2.0.0", 
         "to": "2.1.0",
-        "date": "2024-07-21T00:00:00.000Z",
+        "date": "2025-07-21T00:00:00.000Z",
         "changes": ["Added templates", "search", "Improved performance"]
       }
     ],

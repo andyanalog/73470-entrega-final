@@ -12,7 +12,7 @@
       "isDefault": true,
       "isActive": true,
       "usageCount": 0,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "meeting",
@@ -26,7 +26,7 @@
       "isDefault": true,
       "isActive": true,
       "usageCount": 0,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "meal-plan",
@@ -40,7 +40,7 @@
       "isDefault": true,
       "isActive": true,
       "usageCount": 0,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "study-notes",
@@ -54,7 +54,7 @@
       "isDefault": true,
       "isActive": true,
       "usageCount": 0,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "workout",
@@ -68,7 +68,7 @@
       "isDefault": true,
       "isActive": true,
       "usageCount": 0,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "reading-list",
@@ -82,7 +82,7 @@
       "isDefault": true,
       "isActive": true,
       "usageCount": 0,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "travel-plan",
@@ -96,7 +96,7 @@
       "isDefault": false,
       "isActive": true,
       "usageCount": 0,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "project-plan",
@@ -110,7 +110,7 @@
       "isDefault": false,
       "isActive": true,
       "usageCount": 0,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "daily-journal",
@@ -124,7 +124,7 @@
       "isDefault": false,
       "isActive": true,
       "usageCount": 0,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     },
     {
       "id": "blank",
@@ -138,14 +138,14 @@
       "isDefault": true,
       "isActive": true,
       "usageCount": 0,
-      "createdAt": "2024-07-01T00:00:00.000Z"
+      "createdAt": "2025-07-01T00:00:00.000Z"
     }
   ],
   "metadata": {
     "totalTemplates": 10,
     "activeTemplates": 10,
     "defaultTemplates": 6,
-    "lastUpdated": "2024-07-21T12:00:00.000Z",
+    "lastUpdated": "2025-07-21T12:00:00.000Z",
     "version": "1.0.0",
     "mostUsedTemplate": "blank",
     "categories": ["getting-started", "work", "personal", "education", "health", "travel", "general"]
