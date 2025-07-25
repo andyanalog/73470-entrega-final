@@ -33,7 +33,7 @@ class AudioManager {
                 if (!hasAccess) return false;
             }
 
-            // Configure RecordRTC with optimized settings
+            // Configure RecordRTC
             const recorderOptions = {
                 type: 'audio',
                 mimeType: 'audio/webm',

@@ -897,7 +897,6 @@ class BusinessLogicManager {
                 this.cleanOldBackups();
                 
             } catch (error) {
-                console.warn('Auto-backup failed:', error);
             }
         }
     }

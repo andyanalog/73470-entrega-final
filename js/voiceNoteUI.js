@@ -4,12 +4,18 @@ class VoiceNoteUI {
         this.recordingTimer = null;
         this.recordingStartTime = null;
         this.currentAudio = null;
+        this.currentContext = null; // Track which context we're in
     }
 
-    // Creates the audio recording interface in the new note form
-    createRecordingInterface(containerId) {
+    // Creates the audio recording interface in the specified container with context
+    createRecordingInterface(containerId, context = 'new') {
         const container = document.getElementById(containerId);
-        if (!container) return;
+        if (!container) {
+            return;
+        }
+
+        // Store current context
+        this.currentContext = context;
 
         // Check compatibility
         if (!AudioManager.isSupported()) {
@@ -21,34 +27,47 @@ class VoiceNoteUI {
             return;
         }
 
+        // Use context-specific IDs to avoid conflicts
+        const idSuffix = context === 'edit' ? '-edit' : '';
+        
         const audioHTML = `
-            <div class="audio-section">
+            <div class="audio-section" data-context="${context}">
                 <h3>Voice Note (Optional)</h3>
                 <div class="audio-controls">
-                    <button type="button" id="record-btn" class="btn-audio btn-record">
+                    <button type="button" id="record-btn${idSuffix}" class="btn-audio btn-record">
                         🎤 Record
                     </button>
-                    <button type="button" id="stop-btn" class="btn-audio btn-stop" disabled>
+                    <button type="button" id="stop-btn${idSuffix}" class="btn-audio btn-stop" disabled>
                         ⏹️ Stop
                     </button>
-                    <span id="recording-timer" class="recording-timer">00:00</span>
+                    <span id="recording-timer${idSuffix}" class="recording-timer">00:00</span>
                 </div>
-                <div id="audio-preview" class="audio-preview"></div>
-                <input type="hidden" id="audio-data" name="audio-data">
+                <div id="audio-preview${idSuffix}" class="audio-preview"></div>
+                <input type="hidden" id="audio-data${idSuffix}" name="audio-data">
             </div>
         `;
 
         container.innerHTML = audioHTML;
-        this.setupRecordingEvents();
+        
+        // Setup events with context-specific IDs
+        setTimeout(() => {
+            this.setupRecordingEvents(context);
+        }, 50);
     }
 
-    // Sets up events for recording buttons
-    setupRecordingEvents() {
-        const recordBtn = document.getElementById('record-btn');
-        const stopBtn = document.getElementById('stop-btn');
-        const timerDisplay = document.getElementById('recording-timer');
+    // Sets up events for recording buttons with context-specific IDs
+    setupRecordingEvents(context = 'new') {
+        const idSuffix = context === 'edit' ? '-edit' : '';
+        
+        const recordBtn = document.getElementById(`record-btn${idSuffix}`);
+        const stopBtn = document.getElementById(`stop-btn${idSuffix}`);
+        const timerDisplay = document.getElementById(`recording-timer${idSuffix}`);
 
-        recordBtn?.addEventListener('click', async () => {
+        if (!recordBtn || !stopBtn || !timerDisplay) {
+            return;
+        }
+
+        recordBtn.addEventListener('click', async () => {
             // Start new recording
             const success = await this.startRecording();
             if (success) {
@@ -60,11 +79,11 @@ class VoiceNoteUI {
                 // Start timer
                 this.startTimer(timerDisplay);
             } else {
-                this.showAudioMessage('Error accessing microphone. Check permissions.', 'error');
+                this.showAudioMessage('Error accessing microphone. Check permissions.', 'error', context);
             }
         });
 
-        stopBtn?.addEventListener('click', async () => {
+        stopBtn.addEventListener('click', async () => {
             const audioBlob = await this.stopRecording();
             if (audioBlob) {
                 recordBtn.disabled = false;
@@ -73,7 +92,7 @@ class VoiceNoteUI {
                 recordBtn.classList.remove('recording');
                 
                 this.stopTimer();
-                await this.createAudioPreview(audioBlob);
+                await this.createAudioPreview(audioBlob, context);
             }
         });
     }
@@ -90,10 +109,14 @@ class VoiceNoteUI {
         return await this.audioManager.stopRecording();
     }
 
-    // Clears existing audio in the form
+    // Clears existing audio in the current context
     clearExistingAudio() {
-        const audioPreview = document.getElementById('audio-preview');
-        const audioDataInput = document.getElementById('audio-data');
+        // Clear for current context only
+        const context = this.currentContext || 'new';
+        const idSuffix = context === 'edit' ? '-edit' : '';
+        
+        const audioPreview = document.getElementById(`audio-preview${idSuffix}`);
+        const audioDataInput = document.getElementById(`audio-data${idSuffix}`);
         
         if (audioPreview) audioPreview.innerHTML = '';
         if (audioDataInput) audioDataInput.value = '';
@@ -113,14 +136,6 @@ class VoiceNoteUI {
         }, 1000);
     }
 
-    // Pauses the recording timer (kept for compatibility but not used)
-    pauseTimer() {
-        if (this.recordingTimer) {
-            clearInterval(this.recordingTimer);
-            this.recordingTimer = null;
-        }
-    }
-
     // Stops the recording timer
     stopTimer() {
         if (this.recordingTimer) {
@@ -129,12 +144,15 @@ class VoiceNoteUI {
         }
     }
 
-    // Creates preview of recorded audio
-    async createAudioPreview(audioBlob) {
-        const previewContainer = document.getElementById('audio-preview');
-        const audioDataInput = document.getElementById('audio-data');
+    // Creates preview of recorded audio with context awareness
+    async createAudioPreview(audioBlob, context = 'new') {
+        const idSuffix = context === 'edit' ? '-edit' : '';
+        const previewContainer = document.getElementById(`audio-preview${idSuffix}`);
+        const audioDataInput = document.getElementById(`audio-data${idSuffix}`);
         
-        if (!previewContainer || !audioDataInput) return;
+        if (!previewContainer || !audioDataInput) {
+            return;
+        }
 
         // Convert to base64 for storage
         const base64Audio = await this.audioManager.blobToBase64(audioBlob);
@@ -145,17 +163,17 @@ class VoiceNoteUI {
         const duration = await this.getAudioDuration(audioBlob);
         
         previewContainer.innerHTML = `
-            <div class="audio-preview-item">
+            <div class="audio-preview-item" data-context="${context}">
                 <div class="audio-info">
                     <span class="audio-icon">🎵</span>
                     <span class="audio-duration">${AudioManager.formatDuration(duration)}</span>
                     <span class="audio-size">${this.formatFileSize(audioBlob.size)}</span>
                 </div>
                 <div class="audio-actions">
-                    <button type="button" class="btn-audio btn-play" onclick="voiceNoteUI.playPreviewAudio('${base64Audio}')">
+                    <button type="button" class="btn-audio btn-play" onclick="voiceNoteUI.playPreviewAudio('${base64Audio}', '${context}')">
                         ▶️ Play
                     </button>
-                    <button type="button" class="btn-audio btn-delete" onclick="voiceNoteUI.deletePreviewAudio()">
+                    <button type="button" class="btn-audio btn-delete" onclick="voiceNoteUI.deletePreviewAudio('${context}')">
                         🗑️ Delete
                     </button>
                 </div>
@@ -166,31 +184,71 @@ class VoiceNoteUI {
         setTimeout(() => URL.revokeObjectURL(audioUrl), 10000);
     }
 
-    // Shows existing audio in edit mode
-    displayExistingAudio(base64Audio) {
-        const previewContainer = document.getElementById('audio-preview');
-        if (!previewContainer || !base64Audio) return;
-
-        // Simulate duration (since we can't calculate it exactly from base64)
-        const audioBlob = this.audioManager.base64ToBlob(base64Audio);
+    // Shows existing audio in edit mode with context awareness
+    displayExistingAudio(base64Audio, context = 'edit') {
+        if (!base64Audio) {
+            return;
+        }
         
-        previewContainer.innerHTML = `
-            <div class="audio-preview-item">
-                <div class="audio-info">
-                    <span class="audio-icon">🎵</span>
-                    <span class="audio-duration">Existing Audio</span>
-                    <span class="audio-size">${this.formatFileSize(audioBlob.size)}</span>
-                </div>
-                <div class="audio-actions">
-                    <button type="button" class="btn-audio btn-play" onclick="voiceNoteUI.playPreviewAudio('${base64Audio}')">
-                        ▶️ Play
-                    </button>
-                    <button type="button" class="btn-audio btn-delete" onclick="voiceNoteUI.deletePreviewAudio()">
-                        🗑️ Delete
-                    </button>
-                </div>
-            </div>
-        `;
+        const idSuffix = context === 'edit' ? '-edit' : '';
+        
+        const tryDisplayAudio = (retries = 0) => {
+            const previewContainer = document.getElementById(`audio-preview${idSuffix}`);
+            
+            if (!previewContainer && retries < 15) {
+                setTimeout(() => tryDisplayAudio(retries + 1), 100);
+                return;
+            }
+            
+            if (!previewContainer) {
+                
+                // Try to create the container if it doesn't exist
+                const audioSection = document.querySelector(`.audio-section[data-context="${context}"]`);
+                if (audioSection) {
+                    const newPreview = document.createElement('div');
+                    newPreview.id = `audio-preview${idSuffix}`;
+                    newPreview.className = 'audio-preview';
+                    audioSection.appendChild(newPreview);
+                    
+                    // Try again with the newly created container
+                    setTimeout(() => tryDisplayAudio(0), 50);
+                }
+                return;
+            }
+
+            try {
+                const audioBlob = this.audioManager.base64ToBlob(base64Audio);
+                const fileSize = this.formatFileSize(audioBlob.size);
+                
+                previewContainer.innerHTML = `
+                    <div class="audio-preview-item" data-context="${context}">
+                        <div class="audio-info">
+                            <span class="audio-icon">🎵</span>
+                            <span class="audio-duration">Existing Audio</span>
+                            <span class="audio-size">${fileSize}</span>
+                        </div>
+                        <div class="audio-actions">
+                            <button type="button" class="btn-audio btn-play" onclick="voiceNoteUI.playPreviewAudio('${base64Audio}', '${context}')">
+                                ▶️ Play
+                            </button>
+                            <button type="button" class="btn-audio btn-delete" onclick="voiceNoteUI.deletePreviewAudio('${context}')">
+                                🗑️ Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                previewContainer.innerHTML = `
+                    <div class="audio-error">
+                        Error loading audio. Please try recording a new one.
+                    </div>
+                `;
+            }
+        };
+        
+        // Start the retry process
+        tryDisplayAudio();
     }
 
     // Gets duration of an audio blob
@@ -214,8 +272,9 @@ class VoiceNoteUI {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
     }
 
-    // Plays preview audio
-    playPreviewAudio(base64Audio) {
+    // Plays preview audio with context awareness
+    playPreviewAudio(base64Audio, context = 'new') {
+        
         // Stop current audio if exists
         if (this.currentAudio) {
             this.currentAudio.pause();
@@ -225,30 +284,30 @@ class VoiceNoteUI {
         try {
             this.currentAudio = this.audioManager.playAudio(base64Audio);
             this.currentAudio.play().catch(error => {
-                console.error('Error playing audio:', error);
-                this.showAudioMessage('Error playing audio', 'error');
+                this.showAudioMessage('Error playing audio', 'error', context);
             });
 
             // Show playback indicator
             this.currentAudio.addEventListener('play', () => {
-                this.showAudioMessage('Playing audio...', 'info');
+                this.showAudioMessage('Playing audio...', 'info', context);
             });
 
             this.currentAudio.addEventListener('ended', () => {
-                this.showAudioMessage('Playback completed', 'success');
+                this.showAudioMessage('Playback completed', 'success', context);
             });
 
         } catch (error) {
-            console.error('Error creating audio player:', error);
-            this.showAudioMessage('Error creating audio player', 'error');
+            this.showAudioMessage('Error creating audio player', 'error', context);
         }
     }
 
-    // Deletes preview audio
-    deletePreviewAudio() {
-        const previewContainer = document.getElementById('audio-preview');
-        const audioDataInput = document.getElementById('audio-data');
-        const timerDisplay = document.getElementById('recording-timer');
+    // Deletes preview audio with context awareness
+    deletePreviewAudio(context = 'new') {
+        const idSuffix = context === 'edit' ? '-edit' : '';
+        
+        const previewContainer = document.getElementById(`audio-preview${idSuffix}`);
+        const audioDataInput = document.getElementById(`audio-data${idSuffix}`);
+        const timerDisplay = document.getElementById(`recording-timer${idSuffix}`);
         
         if (previewContainer) previewContainer.innerHTML = '';
         if (audioDataInput) audioDataInput.value = '';
@@ -260,16 +319,18 @@ class VoiceNoteUI {
             this.currentAudio = null;
         }
         
-        // Reset buttons
-        this.resetRecordingButtons();
+        // Reset buttons for this context
+        this.resetRecordingButtons(context);
         
-        this.showAudioMessage('Audio deleted', 'success');
+        this.showAudioMessage('Audio deleted', 'success', context);
     }
 
-    // Resets recording buttons to initial state
-    resetRecordingButtons() {
-        const recordBtn = document.getElementById('record-btn');
-        const stopBtn = document.getElementById('stop-btn');
+    // Resets recording buttons to initial state with context awareness
+    resetRecordingButtons(context = 'new') {
+        const idSuffix = context === 'edit' ? '-edit' : '';
+        
+        const recordBtn = document.getElementById(`record-btn${idSuffix}`);
+        const stopBtn = document.getElementById(`stop-btn${idSuffix}`);
         
         if (recordBtn) {
             recordBtn.disabled = false;
@@ -327,11 +388,9 @@ class VoiceNoteUI {
         try {
             this.currentAudio = this.audioManager.playAudio(base64Audio);
             this.currentAudio.play().catch(error => {
-                console.error('Error playing note audio:', error);
                 this.showAudioMessage('Error playing audio', 'error');
             });
         } catch (error) {
-            console.error('Error creating note audio player:', error);
             this.showAudioMessage('Error creating audio player', 'error');
         }
     }
@@ -344,9 +403,11 @@ class VoiceNoteUI {
         }
     }
 
-    // Shows an audio-related message
-    showAudioMessage(message, type = 'success') {
-        const messageDiv = document.getElementById('new-note-message');
+    // Shows an audio-related message with context awareness
+    showAudioMessage(message, type = 'success', context = 'new') {
+        const messageId = context === 'edit' ? 'edit-note-message' : 'new-note-message';
+        const messageDiv = document.getElementById(messageId);
+        
         if (messageDiv) {
             messageDiv.innerHTML = `<div class="message ${type}">${message}</div>`;
             setTimeout(() => {
@@ -355,8 +416,41 @@ class VoiceNoteUI {
         }
     }
 
-    // Cleans up all audio resources
+    // Reset the audio interface to clean state
+    resetAudioInterface() {
+        
+        // Stop any current audio playback
+        if (this.currentAudio) {
+            this.currentAudio.pause();
+            this.currentAudio = null;
+        }
+        
+        // Stop any ongoing recording
+        this.stopTimer();
+        if (this.audioManager && this.audioManager.isRecording) {
+            this.audioManager.stopRecording();
+        }
+        
+        // Clear both contexts
+        ['new', 'edit'].forEach(context => {
+            const idSuffix = context === 'edit' ? '-edit' : '';
+            
+            const previewContainer = document.getElementById(`audio-preview${idSuffix}`);
+            const audioDataInput = document.getElementById(`audio-data${idSuffix}`);
+            const timerDisplay = document.getElementById(`recording-timer${idSuffix}`);
+            
+            if (previewContainer) previewContainer.innerHTML = '';
+            if (audioDataInput) audioDataInput.value = '';
+            if (timerDisplay) timerDisplay.textContent = '00:00';
+            
+            this.resetRecordingButtons(context);
+        });
+        
+    }
+
+    // Cleans up all audio resources with context clearing
     cleanup() {
+        
         this.stopTimer();
         
         if (this.currentAudio) {
@@ -367,6 +461,23 @@ class VoiceNoteUI {
         if (this.audioManager) {
             this.audioManager.cleanup();
         }
+        
+        // Clear both contexts
+        ['new', 'edit'].forEach(context => {
+            const idSuffix = context === 'edit' ? '-edit' : '';
+            
+            const previewContainer = document.getElementById(`audio-preview${idSuffix}`);
+            const audioDataInput = document.getElementById(`audio-data${idSuffix}`);
+            const timerDisplay = document.getElementById(`recording-timer${idSuffix}`);
+            
+            if (previewContainer) previewContainer.innerHTML = '';
+            if (audioDataInput) audioDataInput.value = '';
+            if (timerDisplay) timerDisplay.textContent = '00:00';
+            
+            this.resetRecordingButtons(context);
+        });
+        
+        this.currentContext = null;
     }
 
     // Gets current audio statistics
@@ -375,6 +486,11 @@ class VoiceNoteUI {
             return this.audioManager.getAudioInfo();
         }
         return null;
+    }
+
+    // Get current state
+    getCurrentState() {
+        return this.currentContext;
     }
 }
 

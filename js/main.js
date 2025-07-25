@@ -436,6 +436,7 @@ function showNoteDetail(noteIndex) {
 
 // Create and show edit section
 function createAndShowEditSection(note) {
+    
     const editSection = createEditNoteSection()
     
     const audioContainerHtml = `<div id="edit-audio-container"></div>`
@@ -471,21 +472,27 @@ function createAndShowEditSection(note) {
     showSection("edit-note")
 
     setTimeout(() => {
-        voiceNoteUI.createRecordingInterface("edit-audio-container")
         
-        const audioDataInput = document.getElementById("audio-data")
-        if (note.audio && audioDataInput) {
-            audioDataInput.value = note.audio
-            voiceNoteUI.displayExistingAudio(note.audio)
-        } else if (audioDataInput) {
-            audioDataInput.value = ""
-        }
+        // Create the recording interface with EDIT context
+        voiceNoteUI.createRecordingInterface("edit-audio-container", "edit")
+        
+        setTimeout(() => {
+            const audioDataInput = document.getElementById("audio-data-edit");
+            
+            if (note.audio && audioDataInput) {
+                audioDataInput.value = note.audio;
+                voiceNoteUI.displayExistingAudio(note.audio, "edit");
+            } else if (audioDataInput) {
+                audioDataInput.value = "";
+            }
 
-        const editForm = document.getElementById("edit-note-form")
-        if (editForm) {
-            editForm.addEventListener("submit", handleEditNoteSubmission)
-        }
-    }, 100)
+            const editForm = document.getElementById("edit-note-form");
+            if (editForm) {
+                editForm.addEventListener("submit", handleEditNoteSubmission);
+            }
+        }, 100);
+        
+    }, 150);
 }
 
 // Create edit note section
@@ -507,15 +514,13 @@ async function handleEditNoteSubmission(e) {
 
     const title = document.getElementById("edit-note-title").value.trim()
     const content = document.getElementById("edit-note-content").value.trim()
-    const audioData = document.getElementById("audio-data")?.value || null
+    const audioData = document.getElementById("audio-data-edit")?.value || null // Use edit context
     const messageDiv = document.getElementById("edit-note-message")
 
-    // Clear any previous messages
     if (messageDiv) {
         messageDiv.innerHTML = ""
     }
 
-    // Validation
     if (!title) {
         showMessage(messageDiv, "Please enter a title.", "error")
         return
@@ -593,7 +598,7 @@ function initializeNewNoteSection() {
     if (editingNoteIndex === null) {
         const audioContainer = document.getElementById("audio-container")
         if (audioContainer && !audioContainer.hasChildNodes()) {
-            voiceNoteUI.createRecordingInterface("audio-container")
+            voiceNoteUI.createRecordingInterface("audio-container", "new")
         }
 
         const titleInput = document.getElementById("note-title")
@@ -724,7 +729,7 @@ async function handleNoteSubmission(e) {
 
     const title = document.getElementById("note-title").value.trim()
     const content = document.getElementById("note-content").value.trim()
-    const audioData = document.getElementById("audio-data")?.value || null
+    const audioData = document.getElementById("audio-data")?.value || null // Use new context
     const messageDiv = document.getElementById("new-note-message")
 
     if (!title || !content) {

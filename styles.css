@@ -1264,3 +1264,61 @@ button:focus {
     font-size: 14px;
   }
 }
+
+#audio-container,
+#edit-audio-container {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+#audio-preview,
+.audio-preview {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    min-height: 20px; 
+}
+
+/* Audio preview items */
+.audio-preview-item {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Audio section in edit mode */
+#edit-note .audio-section {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    background: #f8f9fa;
+    padding: 24px;
+    border-radius: 12px;
+    border: 2px dashed #dee2e6;
+    margin-top: 24px;
+    transition: border-color 0.2s ease;
+}
+
+.audio-info,
+.audio-actions {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+#edit-note-form .audio-section,
+#edit-note-form .audio-preview,
+#edit-note-form .audio-preview-item {
+    display: block !important;
+    visibility: visible !important;
+}
+
+.audio-section,
+.audio-preview,
+.audio-preview-item {
+    position: relative;
+    z-index: 1;
+}
