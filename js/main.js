@@ -26,20 +26,6 @@ let appState = {
     }
 }
 
-// Debug mode toggle (for development only)
-const DEBUG_MODE = false
-
-// Development logger - only logs when DEBUG_MODE is true
-function debugLog(message, data = null) {
-    if (DEBUG_MODE) {
-        if (data) {
-            console.log(`[DEBUG] ${message}`, data)
-        } else {
-            console.log(`[DEBUG] ${message}`)
-        }
-    }
-}
-
 // Initialize all systems
 async function initializeSystems() {
     try {
@@ -65,7 +51,6 @@ async function initializeSystems() {
         window.businessLogic = businessLogic
         window.dataManager = dataManager
         
-        debugLog('Systems initialized successfully')
         return true
         
     } catch (error) {
@@ -87,8 +72,6 @@ async function loadApplicationData() {
             dataManager.loadTemplates()
         ])
         
-        debugLog(`Loaded ${categories.length} categories and ${templates.length} templates`)
-        
         // Load existing notes from localStorage or sample data
         await loadNotes()
         
@@ -103,7 +86,7 @@ async function loadApplicationData() {
     }
 }
 
-// notes loading with better error handling
+// Load notes with error handling
 async function loadNotes() {
     try {
         const savedNotes = localStorage.getItem("notes")
@@ -122,8 +105,6 @@ async function loadNotes() {
                 priority: note.priority || 'medium',
                 isPublic: note.isPublic || false
             }))
-            
-            debugLog(`Loaded ${notes.length} existing notes`)
         } else {
             // Load sample data using data manager
             try {
@@ -131,13 +112,10 @@ async function loadNotes() {
                 if (sampleNotes.length > 0) {
                     notes = sampleNotes
                     saveNotes() // Save to localStorage
-                    debugLog(`Loaded ${notes.length} sample notes`)
                 } else {
                     notes = []
-                    debugLog('Starting with empty notes collection')
                 }
             } catch (error) {
-                debugLog('Could not load sample data, starting with empty collection')
                 notes = []
             }
         }
@@ -151,7 +129,7 @@ async function loadNotes() {
     }
 }
 
-// save notes with error handling
+// Save notes with error handling
 async function saveNotes() {
     try {
         localStorage.setItem("notes", JSON.stringify(notes))
@@ -180,7 +158,7 @@ function generateNoteId() {
     return `note_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
 }
 
-// note creation workflow
+// Note creation workflow
 async function createNoteWithWorkflow(templateId = null, categoryId = null) {
     try {
         const result = await businessLogic.startNoteCreationWorkflow({
@@ -209,7 +187,7 @@ async function createNoteWithWorkflow(templateId = null, categoryId = null) {
     }
 }
 
-// note editing workflow
+// Note editing workflow
 async function editNoteWithWorkflow(noteIndex) {
     try {
         if (noteIndex < 0 || noteIndex >= notes.length) {
@@ -223,7 +201,6 @@ async function editNoteWithWorkflow(noteIndex) {
         createAndShowEditSection(note)
         
     } catch (error) {
-        console.error('Error starting edit:', error)
         toastSystem.error('Failed to start editing. Please try again.')
     }
 }
@@ -268,12 +245,11 @@ async function completeNoteEdit(noteIndex, updatedData) {
         return updatedNote
         
     } catch (error) {
-        console.error('Error updating note:', error)
         throw error
     }
 }
 
-// note deletion with workflow
+// Note deletion with workflow
 async function deleteNoteWithWorkflow(noteIndex) {
     try {
         if (noteIndex < 0 || noteIndex >= notes.length) {
@@ -330,7 +306,6 @@ async function deleteNoteWithWorkflow(noteIndex) {
         }
         
     } catch (error) {
-        console.error('Error deleting note:', error)
         toastSystem.error('Failed to delete note. Please try again.')
     }
 }
@@ -564,7 +539,6 @@ async function handleEditNoteSubmission(e) {
             showMessage(messageDiv, "Note updated successfully!", "success")
             
         } catch (error) {
-            console.error('Error in form submission:', error)
             showMessage(messageDiv, "Failed to update note. Please try again.", "error")
         }
     } else {
@@ -705,7 +679,7 @@ async function updateNotesStats() {
 
 // Setup event listeners
 function setupEventListeners() {
-    // note form submission
+    // Note form submission
     const noteForm = document.getElementById("note-form")
     if (noteForm) {
         noteForm.addEventListener("submit", handleNoteSubmission)
@@ -1030,10 +1004,8 @@ async function performSystemHealthCheck() {
             toastSystem.warning('Some advanced features are limited.')
         }
         
-        debugLog('System Health Check completed', healthCheck)
-        
     } catch (error) {
-        debugLog('Health check failed', error)
+        // Silent failure for health check
     }
 }
 
@@ -1062,7 +1034,6 @@ async function initializeAudioSystems() {
         window.voiceNoteUI = voiceNoteUI
         window.audioManager = audioManager
         
-        debugLog('Audio systems initialized successfully')
         return true
         
     } catch (error) {
@@ -1120,31 +1091,24 @@ function setupGlobalFunctions() {
 // Initialize the complete application
 async function initializeApplication() {
     try {
-        debugLog('Starting Notes App initialization...')
-        
         // Show loading screen
         showInitialLoader()
         
         // Initialize core systems
         await initializeSystems()
-        debugLog('Core systems initialized')
         
         // Load application data
         await loadApplicationData()
-        debugLog('Application data loaded')
         
         // Initialize audio systems
         await initializeAudioSystems()
-        debugLog('Audio systems ready')
         
         // Setup UI components
         createSidebarNotesList()
-        debugLog('UI components created')
         
         // Setup event listeners
         setupEventListeners()
         setupGlobalFunctions()
-        debugLog('Event listeners configured')
         
         // Show initial view
         if (notes.length > 0) {
@@ -1166,8 +1130,6 @@ async function initializeApplication() {
         
         // Perform health check
         setTimeout(performSystemHealthCheck, 1000)
-        
-        debugLog('Notes App fully initialized!')
         
     } catch (error) {
         await handleInitializationError(error)
@@ -1207,8 +1169,6 @@ function cleanup() {
         if (modalSystem) modalSystem.cleanup()
         if (toastSystem) toastSystem.cleanup()
         if (dataManager) dataManager.cleanup()
-        
-        debugLog('Application cleanup completed')
     } catch (error) {
         // Silent cleanup - no user notification needed
     }
@@ -1226,9 +1186,8 @@ function startAutoSave() {
         if (notes.length > 0) {
             try {
                 await saveNotes()
-                debugLog('Auto-save completed')
             } catch (error) {
-                debugLog('Auto-save failed', error)
+                // Silent auto-save failure
             }
         }
     }, 30000) // Auto-save every 30 seconds
