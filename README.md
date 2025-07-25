@@ -60,6 +60,7 @@ notes-app/
     ├── modalSystem.js      # Modal dialogs and notifications
     ├── errorHandler.js     # Error handling system
     ├── businessLogic.js    # Business logic and workflows
+    ├── darkModeManager.js  # Darkmode
     ├── settings.json       # App configuration
     ├── templates.json      # Note templates
     ├── categories.json     # Category definitions
