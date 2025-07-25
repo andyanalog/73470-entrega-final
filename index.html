@@ -58,50 +58,7 @@
     <script src="js/audioManager.js"></script>
     <script src="js/voiceNoteUI.js"></script>
     <script src="js/dataManager.js"></script>
+    <script src="js/darkModeManager.js"></script>
     <script src="js/main.js"></script>
-
-    <!-- Dark Mode Implementation -->
-    <script>
-        function addDarkmodeWidget() {
-            const options = {
-                bottom: '32px',
-                right: '32px',
-                left: 'unset',
-                time: '0.3s',
-                mixColor: '#fff',
-                backgroundColor: '#fff',
-                buttonColorDark: '#100f2c',
-                buttonColorLight: '#fff',
-                saveInCookies: true,
-                label: '🌓',
-                autoMatchOSTheme: false
-            };
-
-            const darkmode = new Darkmode(options);
-            darkmode.showWidget();
-
-            // Optional: Listen for theme changes to update app state
-            const darkmodeToggle = document.querySelector('.darkmode-toggle');
-            if (darkmodeToggle) {
-                darkmodeToggle.addEventListener('click', function() {
-                    // Update app state if needed
-                    setTimeout(() => {
-                        const isDark = document.body.classList.contains('darkmode--activated');
-                        if (window.appState) {
-                            window.appState.ui.theme = isDark ? 'dark' : 'light';
-                        }
-                        
-                        // Dispatch custom event for other components
-                        window.dispatchEvent(new CustomEvent('themeChanged', {
-                            detail: { theme: isDark ? 'dark' : 'light' }
-                        }));
-                    }, 100);
-                });
-            }
-        }
-
-        // Initialize dark mode when page loads
-        window.addEventListener('load', addDarkmodeWidget);
-    </script>
 </body>
 </html>
